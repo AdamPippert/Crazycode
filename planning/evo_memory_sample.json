@@ -1,0 +1,7 @@
+{
+  "task_signature": "debug-python-import-error",
+  "context_features": ["python", "venv", "relative-import"],
+  "actions": ["checked sys.path", "fixed __init__.py"],
+  "outcome": "success",
+  "confidence": 0.91
+}

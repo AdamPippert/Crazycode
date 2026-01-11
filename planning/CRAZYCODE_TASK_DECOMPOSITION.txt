@@ -1,0 +1,101 @@
+project: CrazyCode-agentic-evolution
+version: 0.1
+mode: deterministic
+autonomy: supervised
+
+global_constraints:
+  - tui_only
+  - local_first
+  - no_background_execution
+  - full_auditability
+
+phases:
+
+  - phase: evo_memory
+    description: Implement Evo-Memory experience subsystem
+    tasks:
+      - id: evo_schema
+        description: Define experience data model and storage format
+        owner: agent_backend
+        outputs:
+          - experience_schema
+      - id: evo_storage
+        description: Implement local persistence layer
+        owner: agent_backend
+        depends_on: evo_schema
+      - id: evo_signature
+        description: Implement task signature extraction
+        owner: agent_logic
+      - id: evo_retrieval
+        description: Implement similarity retrieval logic
+        owner: agent_logic
+      - id: evo_update
+        description: Implement post-task reinforcement update
+        owner: agent_logic
+      - id: evo_inspection
+        description: Add user inspection and deletion capability
+        owner: agent_tui
+
+  - phase: orchestration_loop
+    description: Implement minimal agent orchestration loop
+    tasks:
+      - id: state_schema
+        description: Define shared task state structure
+        owner: agent_core
+      - id: planner_agent
+        description: Implement planner agent interface
+        owner: agent_logic
+      - id: coder_agent
+        description: Implement coder agent interface
+        owner: agent_logic
+      - id: evaluator_agent
+        description: Implement evaluator agent interface
+        owner: agent_logic
+      - id: router
+        description: Implement deterministic routing logic
+        owner: agent_core
+        depends_on:
+          - state_schema
+          - planner_agent
+          - coder_agent
+          - evaluator_agent
+      - id: confidence_gate
+        description: Implement confidence scoring and gating
+        owner: agent_logic
+      - id: tui_trace
+        description: Expose orchestration trace in TUI
+        owner: agent_tui
+
+  - phase: execution_integration
+    description: Integrate Daytona and MCP
+    tasks:
+      - id: mcp_schema
+        description: Define MCP node schemas
+        owner: agent_core
+      - id: executor_node
+        description: Implement MCP executor node
+        owner: agent_backend
+      - id: daytona_bridge
+        description: Implement Daytona sandbox lifecycle
+        owner: agent_backend
+      - id: artifact_registry
+        description: Implement artifact collection and storage
+        owner: agent_backend
+      - id: execution_policy
+        description: Enforce execution security constraints
+        owner: agent_core
+      - id: end_to_end_test
+        description: Run full task through planner → executor
+        owner: agent_test
+
+success_conditions:
+  - repeated_task_latency_reduced
+  - no_execution_without_evaluation
+  - task_resumable_after_interrupt
+  - full_tui_trace_available
+
+failure_conditions:
+  - hidden_agent_steps
+  - uncontrolled_execution
+  - non_deterministic_routing
+  - memory_corruption_without_recovery

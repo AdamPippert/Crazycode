@@ -1,0 +1,142 @@
+DAYTONA + MCP INTEGRATION SPECIFICATION (OpenCode)
+
+PURPOSE
+-------
+This document defines how OpenCode integrates Daytona sandboxes and MCP
+(Model Context Protocol) to enable safe execution, tool interoperability,
+and future multi-model expansion.
+
+This integration is mandatory for all code execution paths.
+
+
+DESIGN GOALS
+------------
+- All code execution must be sandboxed
+- Execution must be reproducible and inspectable
+- Models and tools must be swappable without rewriting logic
+- Execution artifacts must be persisted and traceable
+- Failure must be contained and observable
+
+
+DAYTONA ROLE
+------------
+Daytona is responsible for all runtime execution.
+
+Responsibilities:
+- Create isolated execution environments
+- Mount project files
+- Execute code and tests
+- Capture outputs and side effects
+- Tear down environments deterministically
+
+
+SANDBOX LIFECYCLE
+-----------------
+1. Task enters EXECUTOR phase
+2. Daytona sandbox is created
+3. Project files mounted read/write
+4. Execution command issued
+5. Artifacts captured
+6. Sandbox destroyed
+
+No sandbox may persist beyond a single task step.
+
+
+SANDBOX INPUTS
+--------------
+- Source code (generated or modified)
+- Dependency definitions (if present)
+- Execution command
+- Environment variables (explicit only)
+
+
+SANDBOX OUTPUTS (ARTIFACTS)
+---------------------------
+- stdout
+- stderr
+- exit code
+- modified files
+- test reports
+- execution metadata (time, resources)
+
+All outputs must be registered as artifacts.
+
+
+MCP ROLE
+--------
+MCP acts as the coordination and abstraction layer.
+
+Responsibilities:
+- Route tasks to agents
+- Provide tool invocation interface
+- Abstract model selection
+- Provide memory access
+- Enable future multi-model setups
+
+
+MCP NODE DEFINITIONS
+--------------------
+Required MCP nodes:
+
+planner:
+- task decomposition
+- plan reuse
+- memory-informed reasoning
+
+coder:
+- code generation and modification
+
+evaluator:
+- static checks
+- test result interpretation
+- confidence scoring
+
+executor:
+- Daytona sandbox bridge
+- artifact capture
+
+memory:
+- Evo-Memory access
+- retrieval and update
+
+
+EXECUTOR MCP NODE
+-----------------
+The executor node must:
+- Accept execution requests
+- Launch Daytona sandbox
+- Stream execution status
+- Return structured results
+
+Executor must NEVER:
+- Generate code
+- Modify plans
+- Make autonomous decisions
+
+
+FAILURE ISOLATION
+-----------------
+Rules:
+- Sandbox failure must not crash OpenCode
+- All failures return structured error objects
+- No retry without planner involvement
+- Partial artifacts must still be recorded
+
+
+SECURITY CONSTRAINTS
+--------------------
+- No network access unless explicitly allowed
+- No host filesystem access outside mount
+- No privileged execution
+- No persistence between runs
+
+
+SUCCESS CRITERIA
+----------------
+- Code never executes outside Daytona
+- Artifacts are always available post-run
+- MCP node swapping does not break execution
+- Failures are contained and diagnosable
+
+
+END OF FILE
