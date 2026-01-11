@@ -1,5 +1,5 @@
-import { createOpencodeClient, type Event } from "@opencode-ai/sdk/v2/client"
-import { createSimpleContext } from "@opencode-ai/ui/context"
+import { createCrazycodeClient, type Event } from "@crazycode-ai/sdk/v2/client"
+import { createSimpleContext } from "@crazycode-ai/ui/context"
 import { createGlobalEmitter } from "@solid-primitives/event-bus"
 import { onCleanup } from "solid-js"
 import { useGlobalSDK } from "./global-sdk"
@@ -10,7 +10,7 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
   init: (props: { directory: string }) => {
     const platform = usePlatform()
     const globalSDK = useGlobalSDK()
-    const sdk = createOpencodeClient({
+    const sdk = createCrazycodeClient({
       baseUrl: globalSDK.url,
       fetch: platform.fetch,
       directory: props.directory,

@@ -16,16 +16,16 @@ import {
   type LspStatus,
   type VcsInfo,
   type PermissionRequest,
-  createOpencodeClient,
-} from "@opencode-ai/sdk/v2/client"
+  createCrazycodeClient,
+} from "@crazycode-ai/sdk/v2/client"
 import { createStore, produce, reconcile } from "solid-js/store"
-import { Binary } from "@opencode-ai/util/binary"
-import { retry } from "@opencode-ai/util/retry"
+import { Binary } from "@crazycode-ai/util/binary"
+import { retry } from "@crazycode-ai/util/retry"
 import { useGlobalSDK } from "./global-sdk"
 import { ErrorPage, type InitError } from "../pages/error"
 import { batch, createContext, useContext, onCleanup, onMount, type ParentProps, Switch, Match } from "solid-js"
-import { showToast } from "@opencode-ai/ui/toast"
-import { getFilename } from "@opencode-ai/util/path"
+import { showToast } from "@crazycode-ai/ui/toast"
+import { getFilename } from "@crazycode-ai/util/path"
 
 type State = {
   status: "loading" | "partial" | "complete"
@@ -137,7 +137,7 @@ function createGlobalSync() {
   async function bootstrapInstance(directory: string) {
     if (!directory) return
     const [store, setStore] = child(directory)
-    const sdk = createOpencodeClient({
+    const sdk = createCrazycodeClient({
       baseUrl: globalSDK.url,
       directory,
       throwOnError: true,
@@ -394,7 +394,7 @@ function createGlobalSync() {
         break
       }
       case "lsp.updated": {
-        const sdk = createOpencodeClient({
+        const sdk = createCrazycodeClient({
           baseUrl: globalSDK.url,
           directory,
           throwOnError: true,
@@ -429,7 +429,7 @@ function createGlobalSync() {
         globalSDK.client.project.list().then(async (x) => {
           const projects = (x.data ?? [])
             .filter((p) => !!p?.id)
-            .filter((p) => !!p.worktree && !p.worktree.includes("opencode-test"))
+            .filter((p) => !!p.worktree && !p.worktree.includes("crazycode-test"))
             .slice()
             .sort((a, b) => a.id.localeCompare(b.id))
           setGlobalStore("project", projects)
