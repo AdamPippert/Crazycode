@@ -2,7 +2,7 @@ EVO-MEMORY SUBSYSTEMS
 
 PURPOSE
 -------
-Evo-Memory provides persistent, self-evolving experience memory for OpenCode.
+Evo-Memory provides persistent, self-evolving experience memory for CrazyCode.
 It allows the system to reuse successful strategies, adapt to user patterns,
 and reduce redundant reasoning across sessions without expanding prompt context.
 
@@ -75,7 +75,7 @@ Example:
 STORAGE
 -------
 Default path:
-~/.opencode/memory/
+~/.crazycode/memory/
 
 Recommended backends:
 - SQLite (preferred)

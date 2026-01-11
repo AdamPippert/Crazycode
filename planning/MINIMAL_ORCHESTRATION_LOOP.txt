@@ -1,8 +1,8 @@
-MINIMAL AGENT ORCHESTRATION LOOP (OpenCode v0)
+MINIMAL AGENT ORCHESTRATION LOOP (CrazyCode v0)
 
 PURPOSE
 -------
-This document defines the first operational agent orchestration loop for OpenCode.
+This document defines the first operational agent orchestration loop for CrazyCode.
 
 The goal is to enable:
 - Deterministic delegation
