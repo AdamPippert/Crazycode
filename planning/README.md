@@ -43,6 +43,7 @@ CrazyCode is evolving from a reactive assistant into a **persistent, self-improv
 |------|------|--------|
 | Evo-Memory | [evo-memory-spec.md](./evo-memory-spec.md) | ✅ Ready |
 | Orchestration Loop | [orchestration-loop-spec.md](./orchestration-loop-spec.md) | ✅ Ready |
+| Ralph Mode | [ralph-mode-spec.md](./ralph-mode-spec.md) | ✅ Ready |
 
 ### Planned
 
