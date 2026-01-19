@@ -1,4 +1,4 @@
-import { createOpencodeClient, type Event } from "@crazycode-ai/sdk/v2/client"
+import { createCrazycodeClient, type Event } from "@crazycode-ai/sdk/v2/client"
 import { createSimpleContext } from "@crazycode-ai/ui/context"
 import { createGlobalEmitter } from "@solid-primitives/event-bus"
 import { batch, onCleanup } from "solid-js"
@@ -11,7 +11,7 @@ export const { use: useGlobalSDK, provider: GlobalSDKProvider } = createSimpleCo
     const server = useServer()
     const abort = new AbortController()
 
-    const eventSdk = createOpencodeClient({
+    const eventSdk = createCrazycodeClient({
       baseUrl: server.url,
       signal: abort.signal,
     })
@@ -94,7 +94,7 @@ export const { use: useGlobalSDK, provider: GlobalSDKProvider } = createSimpleCo
     })
 
     const platform = usePlatform()
-    const sdk = createOpencodeClient({
+    const sdk = createCrazycodeClient({
       baseUrl: server.url,
       fetch: platform.fetch,
       throwOnError: true,

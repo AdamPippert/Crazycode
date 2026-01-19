@@ -48,7 +48,7 @@ import { SessionContextUsage } from "@/components/session-context-usage"
 import { usePermission } from "@/context/permission"
 import { useGlobalSync } from "@/context/global-sync"
 import { usePlatform } from "@/context/platform"
-import { createOpencodeClient, type Message, type Part } from "@crazycode-ai/sdk/v2/client"
+import { createCrazycodeClient, type Message, type Part } from "@crazycode-ai/sdk/v2/client"
 import { Binary } from "@crazycode-ai/util/binary"
 import { showToast } from "@crazycode-ai/ui/toast"
 import { base64Encode } from "@crazycode-ai/util/encode"
@@ -1029,7 +1029,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
       }
 
       if (sessionDirectory !== projectDirectory) {
-        client = createOpencodeClient({
+        client = createCrazycodeClient({
           baseUrl: sdk.url,
           fetch: platform.fetch,
           directory: sessionDirectory,

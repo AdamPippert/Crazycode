@@ -7,13 +7,13 @@ import { TextField } from "@crazycode-ai/ui/text-field"
 import { Button } from "@crazycode-ai/ui/button"
 import { normalizeServerUrl, serverDisplayName, useServer } from "@/context/server"
 import { usePlatform } from "@/context/platform"
-import { createOpencodeClient } from "@crazycode-ai/sdk/v2/client"
+import { createCrazycodeClient } from "@crazycode-ai/sdk/v2/client"
 import { useNavigate } from "@solidjs/router"
 
 type ServerStatus = { healthy: boolean; version?: string }
 
 async function checkHealth(url: string, fetch?: typeof globalThis.fetch): Promise<ServerStatus> {
-  const sdk = createOpencodeClient({
+  const sdk = createCrazycodeClient({
     baseUrl: url,
     fetch,
     signal: AbortSignal.timeout(3000),

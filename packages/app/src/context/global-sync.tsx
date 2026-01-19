@@ -16,7 +16,7 @@ import {
   type LspStatus,
   type VcsInfo,
   type PermissionRequest,
-  createOpencodeClient,
+  createCrazycodeClient,
 } from "@crazycode-ai/sdk/v2/client"
 import { createStore, produce, reconcile } from "solid-js/store"
 import { Binary } from "@crazycode-ai/util/binary"
@@ -137,7 +137,7 @@ function createGlobalSync() {
   async function bootstrapInstance(directory: string) {
     if (!directory) return
     const [store, setStore] = child(directory)
-    const sdk = createOpencodeClient({
+    const sdk = createCrazycodeClient({
       baseUrl: globalSDK.url,
       directory,
       throwOnError: true,
@@ -394,7 +394,7 @@ function createGlobalSync() {
         break
       }
       case "lsp.updated": {
-        const sdk = createOpencodeClient({
+        const sdk = createCrazycodeClient({
           baseUrl: globalSDK.url,
           directory,
           throwOnError: true,
