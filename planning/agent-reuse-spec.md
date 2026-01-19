@@ -21,6 +21,7 @@ This subsystem is **deterministic**, **inspectable**, and **cache-first**.
 AgentReuse caches **PLANS**, not outputs.
 
 A cached plan represents:
+
 - The structural decomposition of a task
 - The agent sequence that executed it
 - The decision points and their resolutions
@@ -32,41 +33,41 @@ Plans are matched by **semantic signature**, not string equality.
 
 ### CachedPlan
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | UUID | Unique plan identifier |
-| `signature` | string | Canonical task signature |
-| `features` | object | Structured matching criteria |
-| `steps` | array | Ordered plan steps |
-| `agent_sequence` | array | Agents involved |
-| `decision_points` | array | Branching decisions made |
-| `artifacts` | array | Output references |
-| `success_count` | int | Times reused successfully |
-| `failure_count` | int | Times reused unsuccessfully |
-| `last_used` | string | ISO-8601 timestamp |
-| `created_at` | string | ISO-8601 timestamp |
-| `invalidated` | bool | Whether plan is stale |
+| Field             | Type   | Description                  |
+| ----------------- | ------ | ---------------------------- |
+| `id`              | UUID   | Unique plan identifier       |
+| `signature`       | string | Canonical task signature     |
+| `features`        | object | Structured matching criteria |
+| `steps`           | array  | Ordered plan steps           |
+| `agent_sequence`  | array  | Agents involved              |
+| `decision_points` | array  | Branching decisions made     |
+| `artifacts`       | array  | Output references            |
+| `success_count`   | int    | Times reused successfully    |
+| `failure_count`   | int    | Times reused unsuccessfully  |
+| `last_used`       | string | ISO-8601 timestamp           |
+| `created_at`      | string | ISO-8601 timestamp           |
+| `invalidated`     | bool   | Whether plan is stale        |
 
 ### PlanStep
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `index` | int | Step order |
-| `action` | string | Action identifier |
-| `agent` | string | Responsible agent |
-| `inputs` | array | Required inputs |
-| `outputs` | array | Expected outputs |
-| `preconditions` | array | Required state |
-| `postconditions` | array | Resulting state |
+| Field            | Type   | Description       |
+| ---------------- | ------ | ----------------- |
+| `index`          | int    | Step order        |
+| `action`         | string | Action identifier |
+| `agent`          | string | Responsible agent |
+| `inputs`         | array  | Required inputs   |
+| `outputs`        | array  | Expected outputs  |
+| `preconditions`  | array  | Required state    |
+| `postconditions` | array  | Resulting state   |
 
 ### DecisionPoint
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `step_index` | int | Where decision occurred |
-| `condition` | string | What was evaluated |
-| `choice` | string | Which branch taken |
-| `alternatives` | array | Other options available |
+| Field          | Type   | Description             |
+| -------------- | ------ | ----------------------- |
+| `step_index`   | int    | Where decision occurred |
+| `condition`    | string | What was evaluated      |
+| `choice`       | string | Which branch taken      |
+| `alternatives` | array  | Other options available |
 
 ## Signature Extraction
 
@@ -87,13 +88,13 @@ Signatures must enable semantic matching without exact string comparison.
 
 ### Examples
 
-| User Request | Signature |
-|--------------|-----------|
-| "Add a REST endpoint for users" | `create-rest-endpoint` |
-| "Create an API route for products" | `create-rest-endpoint` |
-| "Write unit tests for the auth module" | `write-unit-tests-module` |
-| "Add tests for UserService" | `write-unit-tests-service` |
-| "Refactor the payment handler" | `refactor-handler` |
+| User Request                           | Signature                  |
+| -------------------------------------- | -------------------------- |
+| "Add a REST endpoint for users"        | `create-rest-endpoint`     |
+| "Create an API route for products"     | `create-rest-endpoint`     |
+| "Write unit tests for the auth module" | `write-unit-tests-module`  |
+| "Add tests for UserService"            | `write-unit-tests-service` |
+| "Refactor the payment handler"         | `refactor-handler`         |
 
 ## Matching Algorithm
 
@@ -177,6 +178,7 @@ def retrieve_plan(task) -> Optional[CachedPlan]:
 ### Invalidate
 
 Plans are invalidated when:
+
 - Referenced files are modified
 - Referenced functions are renamed/deleted
 - Framework version changes
@@ -204,6 +206,7 @@ Cached plans are adapted, not blindly replayed.
 ### Example
 
 Cached plan for `create-rest-endpoint`:
+
 ```
 1. Create handler function
 2. Add route registration
@@ -215,6 +218,7 @@ Cached plan for `create-rest-endpoint`:
 New task: "Create a REST endpoint for orders with pagination"
 
 Adapted plan:
+
 ```
 1. Create handler function [target: orders]
 2. Add route registration [target: orders]

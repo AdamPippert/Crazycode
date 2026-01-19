@@ -7,6 +7,7 @@
 Based on analysis of your CrazyCode and Claude Code usage patterns, this document synthesizes how to implement the 8 planning specifications to maximize benefit for your daily coding workflow.
 
 **Key Insight:** You work across multiple agents (CrazyCode with various LLMs, Claude Code) and projects (CrazyCode fork, OC2CC bridge). The specs should enable:
+
 1. Shared memory across sessions
 2. Plan reuse across similar tasks
 3. Seamless context handoff between tools
@@ -16,13 +17,13 @@ Based on analysis of your CrazyCode and Claude Code usage patterns, this documen
 
 ### Observed Patterns
 
-| Pattern | Frequency | Pain Point |
-|---------|-----------|------------|
-| Session restarts | High | Context loss, re-explaining goals |
-| Similar task repetition | High | Rediscovering same solutions |
-| Multi-agent workflows | Medium | Manual context transfer |
-| Long-running tasks | Medium | Interruption recovery |
-| Cross-project work | High | Context switching overhead |
+| Pattern                 | Frequency | Pain Point                        |
+| ----------------------- | --------- | --------------------------------- |
+| Session restarts        | High      | Context loss, re-explaining goals |
+| Similar task repetition | High      | Rediscovering same solutions      |
+| Multi-agent workflows   | Medium    | Manual context transfer           |
+| Long-running tasks      | Medium    | Interruption recovery             |
+| Cross-project work      | High      | Context switching overhead        |
 
 ### Tool Distribution
 
@@ -50,11 +51,13 @@ Based on analysis of your CrazyCode and Claude Code usage patterns, this documen
 **Why First:** Every other system depends on structured context flow.
 
 **Immediate Benefits:**
+
 - Consistent artifact format across CrazyCode and Claude Code
 - Reduced token waste from verbose context
 - Session summaries that persist
 
 **Implementation Path:**
+
 ```
 Week 1: Define artifact schema (JSON)
 Week 2: Implement artifact extraction from tool outputs
@@ -63,6 +66,7 @@ Week 4: Add TUI inspector command
 ```
 
 **Quick Win:** Create a `.crazycode/artifacts/` directory structure now:
+
 ```bash
 mkdir -p ~/.crazycode/artifacts/{code,plan,decision,fact,error,summary}
 ```
@@ -72,11 +76,13 @@ mkdir -p ~/.crazycode/artifacts/{code,plan,decision,fact,error,summary}
 **Why Second:** Enables pause/resume for all other systems.
 
 **Immediate Benefits:**
+
 - Resume interrupted work without re-explaining
 - Clear progress visibility in TUI
 - Natural decomposition of complex features
 
 **Integration with Current Workflow:**
+
 - CrazyCode session → TaskNode tree persisted to disk
 - Claude Code conversation → Mapped to parallel TaskNode structure
 - Cross-session: Task state survives regardless of which tool you use
@@ -88,6 +94,7 @@ mkdir -p ~/.crazycode/artifacts/{code,plan,decision,fact,error,summary}
 **Synergy:** Evo-Memory captures experiences, AgentReuse caches the plans that produced them.
 
 **Example Flow:**
+
 ```
 You: "Add authentication to the API"
 
@@ -108,6 +115,7 @@ Planner: "I found a successful approach from October:
 ```
 
 **Shared Storage:** Both systems should use the same SQLite database:
+
 ```
 ~/.crazycode/memory/
 ├── experiences.db      # Evo-Memory records
@@ -120,6 +128,7 @@ Planner: "I found a successful approach from October:
 **Integration Point:** Every code generation passes through verification.
 
 **Your Workflow Enhancement:**
+
 ```
 Current: You manually review every change
 Future:  confidence >= 0.9 → auto-apply with notification
@@ -128,6 +137,7 @@ Future:  confidence >= 0.9 → auto-apply with notification
 ```
 
 **Custom Evaluators for Your Stack:**
+
 ```python
 # ~/.crazycode/evaluators/project_style.py
 class TDDEvaluator(Evaluator):
@@ -158,6 +168,7 @@ class TDDEvaluator(Evaluator):
 **Enables:** Multiple agents working simultaneously on independent subtasks.
 
 **Your Use Case:**
+
 ```
 Task: "Refactor payment module and update documentation"
 
@@ -178,6 +189,7 @@ Speedup: 2x vs sequential
 **Enables:** Rich relationship traversal across your entire development history.
 
 **Query Examples:**
+
 ```
 "Show me every file that was modified when fixing auth bugs"
 → MAGMA: (Experience{type:bugfix, tag:auth})-[:modifies]->(Entity:file)
@@ -281,6 +293,7 @@ mkdir -p ~/.crazycode/{memory,graph,artifacts,tasks,config,sync}
 ### 2. Start Logging Experiences
 
 Add to your shell profile:
+
 ```bash
 # Log every coding session
 export CRAZYCODE_LOG=~/.crazycode/sessions.log
@@ -289,6 +302,7 @@ export CRAZYCODE_LOG=~/.crazycode/sessions.log
 ### 3. Document Your Patterns
 
 Create `~/.crazycode/patterns.md` and manually record:
+
 - Successful approaches to common tasks
 - Decision rationales
 - Preferred tools and libraries
@@ -298,6 +312,7 @@ This becomes seed data for Evo-Memory.
 ### 4. Tag Your Commits
 
 Use conventional commits with extra metadata:
+
 ```
 feat(auth): add JWT refresh tokens
 
@@ -313,6 +328,7 @@ This enables future experience extraction.
 ### Storage: SQLite Everywhere
 
 **Rationale:**
+
 - Local-first, no network dependencies
 - ACID transactions
 - JSON1 extension for flexible schemas
@@ -321,6 +337,7 @@ This enables future experience extraction.
 ### Language: Python First, Rust for Performance
 
 **Rationale:**
+
 - Matches your CLAUDE.md guidelines
 - Python for rapid iteration (memory, ADK)
 - Rust for hot paths (MAGMA traversal)
@@ -328,6 +345,7 @@ This enables future experience extraction.
 ### Format: JSONL for Logs, SQLite for State
 
 **Rationale:**
+
 - JSONL: Append-only, easy to grep
 - SQLite: Queryable, transactional
 - Both: Inspectable with standard tools
@@ -336,13 +354,13 @@ This enables future experience extraction.
 
 Track these to validate implementation:
 
-| Metric | Baseline | Target | How to Measure |
-|--------|----------|--------|----------------|
-| Context re-explanation | 5/day | 1/day | Count "As I mentioned..." |
-| Plan reuse rate | 0% | 60% | AgentReuse hit rate |
-| Session recovery time | 5 min | 30 sec | Time to resume |
-| Token efficiency | 100% | 60% | Tokens vs. baseline |
-| Parallel speedup | 1x | 2x | Wall clock time |
+| Metric                 | Baseline | Target | How to Measure            |
+| ---------------------- | -------- | ------ | ------------------------- |
+| Context re-explanation | 5/day    | 1/day  | Count "As I mentioned..." |
+| Plan reuse rate        | 0%       | 60%    | AgentReuse hit rate       |
+| Session recovery time  | 5 min    | 30 sec | Time to resume            |
+| Token efficiency       | 100%     | 60%    | Tokens vs. baseline       |
+| Parallel speedup       | 1x       | 2x     | Wall clock time           |
 
 ## Next Steps
 

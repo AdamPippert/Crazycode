@@ -21,6 +21,7 @@ This subsystem is **persistent**, **resumable**, and **user-controllable**.
 Hierarchical Tasks stores work as **TREES**, not flat lists.
 
 Each task can have:
+
 - Parent task (context)
 - Child tasks (decomposition)
 - Sibling tasks (parallel or sequential)
@@ -32,35 +33,35 @@ The tree represents the complete structure of work from high-level goal to atomi
 
 ### TaskNode
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | UUID | Unique node identifier |
-| `parent_id` | UUID | Parent node (null for root) |
-| `title` | string | Human-readable summary |
-| `description` | string | Detailed task description |
-| `status` | enum | Current execution status |
-| `priority` | int | Execution priority (lower = higher) |
-| `created_at` | string | ISO-8601 creation time |
-| `started_at` | string | ISO-8601 start time |
-| `completed_at` | string | ISO-8601 completion time |
-| `paused_at` | string | ISO-8601 pause time |
-| `context` | object | Captured state at pause |
-| `artifacts` | array | Produced outputs |
-| `children` | array | Child task IDs |
-| `metadata` | object | Custom attributes |
+| Field          | Type   | Description                         |
+| -------------- | ------ | ----------------------------------- |
+| `id`           | UUID   | Unique node identifier              |
+| `parent_id`    | UUID   | Parent node (null for root)         |
+| `title`        | string | Human-readable summary              |
+| `description`  | string | Detailed task description           |
+| `status`       | enum   | Current execution status            |
+| `priority`     | int    | Execution priority (lower = higher) |
+| `created_at`   | string | ISO-8601 creation time              |
+| `started_at`   | string | ISO-8601 start time                 |
+| `completed_at` | string | ISO-8601 completion time            |
+| `paused_at`    | string | ISO-8601 pause time                 |
+| `context`      | object | Captured state at pause             |
+| `artifacts`    | array  | Produced outputs                    |
+| `children`     | array  | Child task IDs                      |
+| `metadata`     | object | Custom attributes                   |
 
 ### Status Values
 
-| Status | Description |
-|--------|-------------|
-| `pending` | Not yet started |
-| `ready` | Dependencies met, can start |
-| `in_progress` | Currently executing |
-| `paused` | Manually suspended |
-| `blocked` | Waiting on dependency |
-| `completed` | Finished successfully |
-| `failed` | Finished with error |
-| `cancelled` | Terminated by user or parent |
+| Status        | Description                  |
+| ------------- | ---------------------------- |
+| `pending`     | Not yet started              |
+| `ready`       | Dependencies met, can start  |
+| `in_progress` | Currently executing          |
+| `paused`      | Manually suspended           |
+| `blocked`     | Waiting on dependency        |
+| `completed`   | Finished successfully        |
+| `failed`      | Finished with error          |
+| `cancelled`   | Terminated by user or parent |
 
 ### Example Tree
 
@@ -168,14 +169,14 @@ def complete(task: TaskNode, artifacts: List[str]):
 
 When pausing, capture:
 
-| Component | Description |
-|-----------|-------------|
-| `current_step` | Which step was active |
-| `agent_state` | Active agent's internal state |
-| `file_states` | Checksums of relevant files |
-| `variables` | Working variables |
-| `decision_history` | Choices made so far |
-| `pending_questions` | Unanswered clarifications |
+| Component           | Description                   |
+| ------------------- | ----------------------------- |
+| `current_step`      | Which step was active         |
+| `agent_state`       | Active agent's internal state |
+| `file_states`       | Checksums of relevant files   |
+| `variables`         | Working variables             |
+| `decision_history`  | Choices made so far           |
+| `pending_questions` | Unanswered clarifications     |
 
 ### Context Restoration
 
@@ -190,12 +191,12 @@ When resuming:
 
 ### Dependency Types
 
-| Type | Meaning |
-|------|---------|
-| `sequential` | Must complete before next sibling |
-| `parallel` | Can execute alongside siblings |
-| `blocks` | Must complete before specified task |
-| `requires` | Needs output from specified task |
+| Type         | Meaning                             |
+| ------------ | ----------------------------------- |
+| `sequential` | Must complete before next sibling   |
+| `parallel`   | Can execute alongside siblings      |
+| `blocks`     | Must complete before specified task |
+| `requires`   | Needs output from specified task    |
 
 ### Dependency Resolution
 
@@ -222,19 +223,20 @@ def is_ready(task: TaskNode) -> bool:
 
 ### TUI Commands
 
-| Command | Action |
-|---------|--------|
-| `/pause` | Pause current task |
-| `/resume [id]` | Resume paused task |
-| `/status` | Show task tree status |
-| `/focus [id]` | Switch to specific subtask |
-| `/skip [id]` | Mark task as skipped |
-| `/cancel [id]` | Cancel task and descendants |
-| `/priority [id] [n]` | Change task priority |
+| Command              | Action                      |
+| -------------------- | --------------------------- |
+| `/pause`             | Pause current task          |
+| `/resume [id]`       | Resume paused task          |
+| `/status`            | Show task tree status       |
+| `/focus [id]`        | Switch to specific subtask  |
+| `/skip [id]`         | Mark task as skipped        |
+| `/cancel [id]`       | Cancel task and descendants |
+| `/priority [id] [n]` | Change task priority        |
 
 ### Override Behavior
 
 Users can:
+
 - Pause any in-progress task
 - Resume any paused task
 - Skip any pending task
@@ -300,15 +302,15 @@ CREATE INDEX idx_parent ON tasks(parent_id);
 
 ### Legend
 
-| Symbol | Meaning |
-|--------|---------|
-| ✓ | Completed |
-| ▶ | In progress |
-| ○ | Pending |
-| ◌ | Blocked |
-| ⏸ | Paused |
-| ✗ | Failed |
-| ⊘ | Cancelled |
+| Symbol | Meaning     |
+| ------ | ----------- |
+| ✓      | Completed   |
+| ▶     | In progress |
+| ○      | Pending     |
+| ◌      | Blocked     |
+| ⏸     | Paused      |
+| ✗      | Failed      |
+| ⊘      | Cancelled   |
 
 ## Session Management
 

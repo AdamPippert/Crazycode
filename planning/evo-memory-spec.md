@@ -21,6 +21,7 @@ This subsystem is **local-first**, **inspectable**, and **deterministic** by def
 Evo-Memory stores **EXPERIENCES**, not conversations.
 
 An experience represents:
+
 - A task signature
 - The conditions under which it occurred
 - The actions taken
@@ -35,16 +36,16 @@ Each experience is stored as a single record.
 
 ### Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | UUID | Unique identifier |
-| `task_signature` | string | Short canonical identifier |
-| `features` | object | Structured metadata describing the task |
-| `actions` | array | Ordered list of actions taken |
-| `artifacts` | array | References to files, logs, or outputs |
-| `outcome` | enum | `success` \| `failure` \| `partial` |
-| `confidence` | float | Value between 0.0 and 1.0 |
-| `timestamp` | string | ISO-8601 timestamp |
+| Field            | Type   | Description                             |
+| ---------------- | ------ | --------------------------------------- |
+| `id`             | UUID   | Unique identifier                       |
+| `task_signature` | string | Short canonical identifier              |
+| `features`       | object | Structured metadata describing the task |
+| `actions`        | array  | Ordered list of actions taken           |
+| `artifacts`      | array  | References to files, logs, or outputs   |
+| `outcome`        | enum   | `success` \| `failure` \| `partial`     |
+| `confidence`     | float  | Value between 0.0 and 1.0               |
+| `timestamp`      | string | ISO-8601 timestamp                      |
 
 ### Example
 
@@ -57,15 +58,8 @@ Each experience is stored as a single record.
     "framework": "none",
     "error_type": "ImportError"
   },
-  "actions": [
-    "inspect sys.path",
-    "add __init__.py",
-    "adjust relative import"
-  ],
-  "artifacts": [
-    "file:src/foo.py",
-    "log:traceback.txt"
-  ],
+  "actions": ["inspect sys.path", "add __init__.py", "adjust relative import"],
+  "artifacts": ["file:src/foo.py", "log:traceback.txt"],
   "outcome": "success",
   "confidence": 0.91,
   "timestamp": "2026-01-10T18:42:00Z"
@@ -91,6 +85,7 @@ Each experience is stored as a single record.
 ## Task Signature Extraction
 
 Task signatures must be:
+
 - Short
 - Deterministic
 - Stable across sessions
@@ -135,11 +130,11 @@ After task completion:
 
 ### Confidence Guidance
 
-| Scenario | Confidence Range |
-|----------|------------------|
-| Success + no user intervention | 0.8–1.0 |
-| Success + user fixes | 0.5–0.8 |
-| Failure | 0.0–0.3 |
+| Scenario                       | Confidence Range |
+| ------------------------------ | ---------------- |
+| Success + no user intervention | 0.8–1.0          |
+| Success + user fixes           | 0.5–0.8          |
+| Failure                        | 0.0–0.3          |
 
 ## Non-Goals
 

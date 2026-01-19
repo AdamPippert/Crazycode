@@ -132,7 +132,10 @@ function getSection(areas: Set<string>): string {
   return "Core"
 }
 
-async function summarizeCommit(crazycode: Awaited<ReturnType<typeof createCrazycode>>, message: string): Promise<string> {
+async function summarizeCommit(
+  crazycode: Awaited<ReturnType<typeof createCrazycode>>,
+  message: string,
+): Promise<string> {
   console.log("summarizing commit:", message)
   const session = await crazycode.client.session.create()
   const result = await crazycode.client.session

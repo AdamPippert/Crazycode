@@ -21,6 +21,7 @@ This subsystem is **transparent**, **configurable**, and **fail-safe**.
 Verification treats every code change as **UNTRUSTED** until proven safe.
 
 The pipeline:
+
 1. Runs multiple independent evaluators
 2. Aggregates results into a confidence score
 3. Routes to appropriate autonomy level
@@ -67,20 +68,20 @@ The pipeline:
 
 ### Evaluator Types
 
-| Evaluator | Stage | Description |
-|-----------|-------|-------------|
-| `syntax` | 1 | Language parser validation |
-| `compile` | 1 | Compiler/interpreter check |
-| `lint` | 2 | Style and pattern enforcement |
-| `typecheck` | 2 | Static type verification |
-| `security` | 2 | Vulnerability scanning |
-| `complexity` | 2 | Cyclomatic complexity bounds |
-| `intent` | 3 | Does code match task description |
-| `coverage` | 3 | Test coverage analysis |
-| `behavior` | 3 | Property-based validation |
-| `sandbox` | 4 | Resource limit verification |
-| `effects` | 4 | Side effect detection |
-| `reversibility` | 4 | Can changes be undone |
+| Evaluator       | Stage | Description                      |
+| --------------- | ----- | -------------------------------- |
+| `syntax`        | 1     | Language parser validation       |
+| `compile`       | 1     | Compiler/interpreter check       |
+| `lint`          | 2     | Style and pattern enforcement    |
+| `typecheck`     | 2     | Static type verification         |
+| `security`      | 2     | Vulnerability scanning           |
+| `complexity`    | 2     | Cyclomatic complexity bounds     |
+| `intent`        | 3     | Does code match task description |
+| `coverage`      | 3     | Test coverage analysis           |
+| `behavior`      | 3     | Property-based validation        |
+| `sandbox`       | 4     | Resource limit verification      |
+| `effects`       | 4     | Side effect detection            |
+| `reversibility` | 4     | Can changes be undone            |
 
 ## Evaluator Interface
 
@@ -204,24 +205,24 @@ def calculate_confidence(results: List[EvalResult]) -> float:
 
 ### Score Interpretation
 
-| Score Range | Interpretation |
-|-------------|----------------|
-| 0.95–1.00 | Excellent - all checks pass |
-| 0.80–0.94 | Good - minor warnings only |
-| 0.60–0.79 | Acceptable - some issues |
-| 0.40–0.59 | Questionable - significant concerns |
-| 0.00–0.39 | Poor - major issues detected |
+| Score Range | Interpretation                      |
+| ----------- | ----------------------------------- |
+| 0.95–1.00   | Excellent - all checks pass         |
+| 0.80–0.94   | Good - minor warnings only          |
+| 0.60–0.79   | Acceptable - some issues            |
+| 0.40–0.59   | Questionable - significant concerns |
+| 0.00–0.39   | Poor - major issues detected        |
 
 ## Autonomy Gating
 
 ### Autonomy Levels
 
-| Level | Trigger | Behavior |
-|-------|---------|----------|
-| `auto` | confidence >= 0.9 | Execute immediately |
-| `confirm` | 0.7 <= confidence < 0.9 | Show summary, proceed on Enter |
-| `review` | 0.5 <= confidence < 0.7 | Show diff, require explicit approval |
-| `manual` | confidence < 0.5 | Block execution, show all issues |
+| Level     | Trigger                 | Behavior                             |
+| --------- | ----------------------- | ------------------------------------ |
+| `auto`    | confidence >= 0.9       | Execute immediately                  |
+| `confirm` | 0.7 <= confidence < 0.9 | Show summary, proceed on Enter       |
+| `review`  | 0.5 <= confidence < 0.7 | Show diff, require explicit approval |
+| `manual`  | confidence < 0.5        | Block execution, show all issues     |
 
 ### Gating Logic
 

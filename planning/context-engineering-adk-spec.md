@@ -21,6 +21,7 @@ This subsystem is **composable**, **compressible**, and **auditable**.
 Context Engineering treats context as **COMPILED ARTIFACTS**, not raw history.
 
 The system:
+
 1. Captures structured artifacts from agent outputs
 2. Compiles context tailored to each agent's needs
 3. Compresses and prunes stale information
@@ -30,30 +31,30 @@ The system:
 
 ### Artifact Types
 
-| Type | Description | Example |
-|------|-------------|---------|
-| `code` | Source code or diff | Function definition, patch |
-| `plan` | Structured plan | Task decomposition |
-| `decision` | Choice with rationale | Architecture selection |
-| `fact` | Discovered information | API endpoint, schema |
-| `error` | Failure with context | Stack trace, diagnosis |
-| `user_input` | User clarification | Preference, requirement |
-| `summary` | Compressed context | Session summary |
+| Type         | Description            | Example                    |
+| ------------ | ---------------------- | -------------------------- |
+| `code`       | Source code or diff    | Function definition, patch |
+| `plan`       | Structured plan        | Task decomposition         |
+| `decision`   | Choice with rationale  | Architecture selection     |
+| `fact`       | Discovered information | API endpoint, schema       |
+| `error`      | Failure with context   | Stack trace, diagnosis     |
+| `user_input` | User clarification     | Preference, requirement    |
+| `summary`    | Compressed context     | Session summary            |
 
 ### Artifact Schema
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | UUID | Unique identifier |
-| `type` | enum | Artifact type |
-| `content` | string | Primary content |
-| `metadata` | object | Structured attributes |
-| `references` | array | Related artifact IDs |
-| `created_at` | string | ISO-8601 timestamp |
-| `expires_at` | string | Optional expiration |
-| `priority` | float | Retention priority (0.0–1.0) |
-| `agent` | string | Creating agent |
-| `compressed` | bool | Whether content is compressed |
+| Field        | Type   | Description                   |
+| ------------ | ------ | ----------------------------- |
+| `id`         | UUID   | Unique identifier             |
+| `type`       | enum   | Artifact type                 |
+| `content`    | string | Primary content               |
+| `metadata`   | object | Structured attributes         |
+| `references` | array  | Related artifact IDs          |
+| `created_at` | string | ISO-8601 timestamp            |
+| `expires_at` | string | Optional expiration           |
+| `priority`   | float  | Retention priority (0.0–1.0)  |
+| `agent`      | string | Creating agent                |
+| `compressed` | bool   | Whether content is compressed |
 
 ### Example Artifacts
 

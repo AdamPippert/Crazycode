@@ -42,12 +42,12 @@ nix run nixpkgs#crazycode           # or github:AdamPippert/Crazycode for latest
 
 CrazyCode is also available as a desktop application. Download directly from the [releases page](https://github.com/AdamPippert/Crazycode/releases) or [crazycode.ai/download](https://crazycode.ai/download).
 
-| Platform              | Download                              |
-| --------------------- | ------------------------------------- |
+| Platform              | Download                               |
+| --------------------- | -------------------------------------- |
 | macOS (Apple Silicon) | `crazycode-desktop-darwin-aarch64.dmg` |
 | macOS (Intel)         | `crazycode-desktop-darwin-x64.dmg`     |
 | Windows               | `crazycode-desktop-windows-x64.exe`    |
-| Linux                 | `.deb`, `.rpm`, or AppImage           |
+| Linux                 | `.deb`, `.rpm`, or AppImage            |
 
 ```bash
 # macOS (Homebrew)

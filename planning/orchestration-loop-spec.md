@@ -7,6 +7,7 @@
 This document defines the first operational agent orchestration loop for CrazyCode.
 
 The goal is to enable:
+
 - Deterministic delegation
 - Clear routing
 - Safe execution
@@ -19,20 +20,24 @@ This is **NOT** a fully autonomous system. User oversight is preserved at all ti
 The v0 system consists of four agents:
 
 ### 1. PLANNER
+
 - Decomposes tasks
 - Reuses cached plans
 - Consumes Evo-Memory as bias
 
 ### 2. CODER
+
 - Generates or modifies code
 - Does **not** execute code
 
 ### 3. EVALUATOR
+
 - Checks syntax
 - Runs static checks
 - Assigns confidence score
 
 ### 4. EXECUTOR
+
 - Runs code in a sandbox
 - Captures artifacts
 - Never generates code
@@ -43,16 +48,16 @@ All agents read and write to a shared task state.
 
 ### Required Fields
 
-| Field | Description |
-|-------|-------------|
-| `task_id` | Unique task identifier |
-| `user_input` | Original user request |
-| `plan` | Decomposed task plan |
-| `current_step` | Current execution step |
-| `artifacts` | Generated files, logs, outputs |
-| `confidence` | Current confidence score |
-| `status` | Task status |
-| `history` | Execution history |
+| Field          | Description                    |
+| -------------- | ------------------------------ |
+| `task_id`      | Unique task identifier         |
+| `user_input`   | Original user request          |
+| `plan`         | Decomposed task plan           |
+| `current_step` | Current execution step         |
+| `artifacts`    | Generated files, logs, outputs |
+| `confidence`   | Current confidence score       |
+| `status`       | Task status                    |
+| `history`      | Execution history              |
 
 State must be **serializable** and **resumable**.
 
@@ -103,11 +108,11 @@ Confidence is a numeric value between 0.0 and 1.0.
 
 ### Thresholds
 
-| Range | Action |
-|-------|--------|
-| >= 0.8 | Auto-proceed |
-| 0.5–0.8 | Prompt user |
-| < 0.5 | Reroute to planner |
+| Range   | Action             |
+| ------- | ------------------ |
+| >= 0.8  | Auto-proceed       |
+| 0.5–0.8 | Prompt user        |
+| < 0.5   | Reroute to planner |
 
 Confidence must be **visible** to the user.
 

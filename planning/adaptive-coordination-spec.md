@@ -21,6 +21,7 @@ This subsystem is **observable**, **interruptible**, and **deadlock-free**.
 Adaptive Coordination treats execution as a **DYNAMIC DAG**, not a fixed pipeline.
 
 The system:
+
 1. Identifies independent subtasks that can parallelize
 2. Monitors execution progress across branches
 3. Propagates signals upstream when revision is needed
@@ -57,29 +58,30 @@ The system:
 
 ### Node States
 
-| State | Description |
-|-------|-------------|
-| `pending` | Not yet started |
-| `ready` | Dependencies satisfied, can start |
-| `running` | Currently executing |
-| `completed` | Finished successfully |
-| `failed` | Finished with error |
-| `blocked` | Waiting on upstream revision |
-| `cancelled` | Terminated by upstream failure |
+| State       | Description                       |
+| ----------- | --------------------------------- |
+| `pending`   | Not yet started                   |
+| `ready`     | Dependencies satisfied, can start |
+| `running`   | Currently executing               |
+| `completed` | Finished successfully             |
+| `failed`    | Finished with error               |
+| `blocked`   | Waiting on upstream revision      |
+| `cancelled` | Terminated by upstream failure    |
 
 ### Edge Types
 
-| Type | Meaning |
-|------|---------|
+| Type         | Meaning                               |
+| ------------ | ------------------------------------- |
 | `depends_on` | Must complete before this node starts |
-| `feeds_into` | Output flows to downstream node |
-| `revises` | Failure triggers upstream replanning |
+| `feeds_into` | Output flows to downstream node       |
+| `revises`    | Failure triggers upstream replanning  |
 
 ## Parallelism Detection
 
 ### Independent Subtask Criteria
 
 Two subtasks are independent if:
+
 1. No shared file dependencies
 2. No shared state mutations
 3. No ordering requirements in plan
@@ -125,12 +127,12 @@ def can_parallelize(step: Step, group: List[Step]) -> bool:
 
 ### Trigger Conditions
 
-| Condition | Action |
-|-----------|--------|
-| Subtask fails | Pause siblings, signal upstream |
-| Confidence drops below threshold | Request user input |
-| Resource exhaustion | Throttle parallelism |
-| New information invalidates plan | Trigger replanning |
+| Condition                        | Action                          |
+| -------------------------------- | ------------------------------- |
+| Subtask fails                    | Pause siblings, signal upstream |
+| Confidence drops below threshold | Request user input              |
+| Resource exhaustion              | Throttle parallelism            |
+| New information invalidates plan | Trigger replanning              |
 
 ### Rerouting Flow
 
@@ -171,15 +173,15 @@ def handle_failure(step: Step, error: Error):
 
 ### Coordinator Data Model
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `task_id` | UUID | Parent task identifier |
-| `graph` | DAG | Current execution graph |
-| `active_nodes` | set | Currently running nodes |
-| `completed_nodes` | set | Finished nodes |
-| `pending_revisions` | queue | Upstream revision requests |
-| `parallelism_limit` | int | Max concurrent agents |
-| `resource_usage` | dict | Current resource consumption |
+| Field               | Type  | Description                  |
+| ------------------- | ----- | ---------------------------- |
+| `task_id`           | UUID  | Parent task identifier       |
+| `graph`             | DAG   | Current execution graph      |
+| `active_nodes`      | set   | Currently running nodes      |
+| `completed_nodes`   | set   | Finished nodes               |
+| `pending_revisions` | queue | Upstream revision requests   |
+| `parallelism_limit` | int   | Max concurrent agents        |
+| `resource_usage`    | dict  | Current resource consumption |
 
 ### Graph Operations
 
@@ -263,12 +265,12 @@ class Coordinator:
 
 ### Limits
 
-| Resource | Default Limit | Configurable |
-|----------|---------------|--------------|
-| Concurrent agents | 4 | Yes |
-| Memory per agent | 512MB | Yes |
-| Execution timeout | 5 min/step | Yes |
-| Retry attempts | 2 | Yes |
+| Resource          | Default Limit | Configurable |
+| ----------------- | ------------- | ------------ |
+| Concurrent agents | 4             | Yes          |
+| Memory per agent  | 512MB         | Yes          |
+| Execution timeout | 5 min/step    | Yes          |
+| Retry attempts    | 2             | Yes          |
 
 ### Throttling
 

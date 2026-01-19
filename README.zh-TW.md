@@ -42,12 +42,12 @@ nix run nixpkgs#crazycode           # 或使用 github:AdamPippert/Crazycode 以
 
 CrazyCode 也提供桌面版應用程式。您可以直接從 [發佈頁面 (releases page)](https://github.com/AdamPippert/Crazycode/releases) 或 [crazycode.ai/download](https://crazycode.ai/download) 下載。
 
-| 平台                  | 下載連結                              |
-| --------------------- | ------------------------------------- |
+| 平台                  | 下載連結                               |
+| --------------------- | -------------------------------------- |
 | macOS (Apple Silicon) | `crazycode-desktop-darwin-aarch64.dmg` |
 | macOS (Intel)         | `crazycode-desktop-darwin-x64.dmg`     |
 | Windows               | `crazycode-desktop-windows-x64.exe`    |
-| Linux                 | `.deb`, `.rpm`, 或 AppImage           |
+| Linux                 | `.deb`, `.rpm`, 或 AppImage            |
 
 ```bash
 # macOS (Homebrew Cask)
