@@ -7,11 +7,9 @@ import { config } from "~/config"
 import zenLogoDark from "../../asset/zen-ornate-dark.svg"
 import compareVideo from "../../asset/lander/crazycode-comparison-min.mp4"
 import compareVideoPoster from "../../asset/lander/crazycode-comparison-poster.png"
-import avatarDax from "../../asset/lander/avatar-dax.png"
 import avatarJay from "../../asset/lander/avatar-jay.png"
 import avatarFrank from "../../asset/lander/avatar-frank.png"
 import avatarAdam from "../../asset/lander/avatar-adam.png"
-import avatarDavid from "../../asset/lander/avatar-david.png"
 import { EmailSignup } from "~/component/email-signup"
 import { Faq } from "~/component/faq"
 import { Legal } from "~/component/legal"
@@ -212,19 +210,6 @@ export default function Home() {
           </section>
 
           <section data-component="testimonials">
-            {/*Dax*/}
-            <a href="https://x.com/thdxr/status/1973531687629017227">
-              <div data-slot="testimonial">
-                <div data-slot="name">
-                  <img src={avatarDax} alt="" />
-                  <strong>Dax Raad</strong>
-                  <span>ex-CEO, Terminal Products</span>
-                </div>
-                <div data-slot="quote">
-                  <span>@OpenCode</span> Zen has been life changing, it's truly a no-brainer.
-                </div>
-              </div>
-            </a>
             {/*Jay*/}
             <a href="https://x.com/jayair/status/1973530190870618456">
               <div data-slot="testimonial">
@@ -248,19 +233,6 @@ export default function Home() {
                 </div>
                 <div data-slot="quote">
                   I can't recommend <span>@OpenCode</span> Zen enough. Seriously, it’s really good.
-                </div>
-              </div>
-            </a>
-            {/*David*/}
-            <a href="https://x.com/iamdavidhill/status/1973530568773214622">
-              <div data-slot="testimonial">
-                <div data-slot="name">
-                  <img src={avatarDavid} alt="" />
-                  <strong>David Hill</strong>
-                  <span>ex-Head of Design, Laravel</span>
-                </div>
-                <div data-slot="quote">
-                  With <span>@OpenCode</span> Zen I know all the models are tested and perfect for coding agents.
                 </div>
               </div>
             </a>
