@@ -29,12 +29,12 @@ import { Config } from "@/config/config"
 import { Todo } from "@/session/todo"
 import { z } from "zod"
 import { LoadAPIKeyError } from "ai"
-import type { OpencodeClient, SessionMessageResponse } from "@opencode-ai/sdk/v2"
+import type { CrazycodeClient, SessionMessageResponse } from "@crazycode-ai/sdk/v2"
 
 export namespace ACP {
   const log = Log.create({ service: "acp-agent" })
 
-  export async function init({ sdk: _sdk }: { sdk: OpencodeClient }) {
+  export async function init({ sdk: _sdk }: { sdk: CrazycodeClient }) {
     return {
       create: (connection: AgentSideConnection, fullConfig: ACPConfig) => {
         return new Agent(connection, fullConfig)
@@ -45,7 +45,7 @@ export namespace ACP {
   export class Agent implements ACPAgent {
     private connection: AgentSideConnection
     private config: ACPConfig
-    private sdk: OpencodeClient
+    private sdk: CrazycodeClient
     private sessionManager
 
     constructor(connection: AgentSideConnection, config: ACPConfig) {
@@ -334,18 +334,18 @@ export namespace ACP {
       log.info("initialize", { protocolVersion: params.protocolVersion })
 
       const authMethod: AuthMethod = {
-        description: "Run `opencode auth login` in the terminal",
-        name: "Login with opencode",
-        id: "opencode-login",
+        description: "Run `crazycode auth login` in the terminal",
+        name: "Login with crazycode",
+        id: "crazycode-login",
       }
 
       // If client supports terminal-auth capability, use that instead.
       if (params.clientCapabilities?._meta?.["terminal-auth"] === true) {
         authMethod._meta = {
           "terminal-auth": {
-            command: "opencode",
+            command: "crazycode",
             args: ["auth", "login"],
-            label: "OpenCode Login",
+            label: "CrazyCode Login",
           },
         }
       }
@@ -365,7 +365,7 @@ export namespace ACP {
         },
         authMethods: [authMethod],
         agentInfo: {
-          name: "OpenCode",
+          name: "CrazyCode",
           version: Installation.VERSION,
         },
       }
@@ -1029,12 +1029,12 @@ export namespace ACP {
 
     if (specified && !providers.length) return specified
 
-    const opencodeProvider = providers.find((p) => p.id === "opencode")
-    if (opencodeProvider) {
-      if (opencodeProvider.models["big-pickle"]) {
-        return { providerID: "opencode", modelID: "big-pickle" }
+    const crazycodeProvider = providers.find((p) => p.id === "crazycode")
+    if (crazycodeProvider) {
+      if (crazycodeProvider.models["big-pickle"]) {
+        return { providerID: "crazycode", modelID: "big-pickle" }
       }
-      const [best] = Provider.sort(Object.values(opencodeProvider.models))
+      const [best] = Provider.sort(Object.values(crazycodeProvider.models))
       if (best) {
         return {
           providerID: best.providerID,
@@ -1054,7 +1054,7 @@ export namespace ACP {
 
     if (specified) return specified
 
-    return { providerID: "opencode", modelID: "big-pickle" }
+    return { providerID: "crazycode", modelID: "big-pickle" }
   }
 
   function parseUri(

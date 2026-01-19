@@ -1,7 +1,7 @@
 ---
 mode: primary
 hidden: true
-model: opencode/claude-haiku-4-5
+model: crazycode/claude-haiku-4-5
 color: "#44BA81"
 tools:
   "*": false
@@ -34,10 +34,10 @@ Performance-related issues:
 
 Desktop app issues:
 
-- `opencode web` command
+- `crazycode web` command
 - The desktop app itself
 
-**Only** add if it's specifically about the Desktop application or `opencode web` view. **Do not** add for terminal, TUI, or general opencode issues.
+**Only** add if it's specifically about the Desktop application or `crazycode web` view. **Do not** add for terminal, TUI, or general crazycode issues.
 
 #### nix
 
@@ -45,7 +45,7 @@ Desktop app issues:
 
 #### zen
 
-**Only** add if the issue mentions "zen" or "opencode zen". Zen is our gateway for coding models. **Do not** add for other gateways or inference providers.
+**Only** add if the issue mentions "zen" or "crazycode zen". Zen is our gateway for coding models. **Do not** add for other gateways or inference providers.
 
 If the issue doesn't have "zen" in it then don't add zen label
 

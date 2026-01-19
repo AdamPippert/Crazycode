@@ -7,7 +7,7 @@ import { bootstrap } from "../bootstrap"
 import { Command } from "../../command"
 import { EOL } from "os"
 import { select } from "@clack/prompts"
-import { createOpencodeClient, type OpencodeClient } from "@opencode-ai/sdk/v2"
+import { createCrazycodeClient, type CrazycodeClient } from "@crazycode-ai/sdk/v2"
 import { Server } from "../../server/server"
 import { Provider } from "../../provider/provider"
 import { Agent } from "../../agent/agent"
@@ -27,7 +27,7 @@ const TOOL: Record<string, [string, string]> = {
 
 export const RunCommand = cmd({
   command: "run [message..]",
-  describe: "run opencode with a message",
+  describe: "run crazycode with a message",
   builder: (yargs: Argv) => {
     return yargs
       .positional("message", {
@@ -81,7 +81,7 @@ export const RunCommand = cmd({
       })
       .option("attach", {
         type: "string",
-        describe: "attach to a running opencode server (e.g., http://localhost:4096)",
+        describe: "attach to a running crazycode server (e.g., http://localhost:4096)",
       })
       .option("port", {
         type: "number",
@@ -133,7 +133,7 @@ export const RunCommand = cmd({
       process.exit(1)
     }
 
-    const execute = async (sdk: OpencodeClient, sessionID: string) => {
+    const execute = async (sdk: CrazycodeClient, sessionID: string) => {
       const printEvent = (color: string, type: string, title: string) => {
         UI.println(
           color + `|`,
@@ -276,7 +276,7 @@ export const RunCommand = cmd({
     }
 
     if (args.attach) {
-      const sdk = createOpencodeClient({ baseUrl: args.attach })
+      const sdk = createCrazycodeClient({ baseUrl: args.attach })
 
       const sessionID = await (async () => {
         if (args.continue) {
@@ -323,7 +323,7 @@ export const RunCommand = cmd({
       }
 
       const cfgResult = await sdk.config.get()
-      if (cfgResult.data && (cfgResult.data.share === "auto" || Flag.OPENCODE_AUTO_SHARE || args.share)) {
+      if (cfgResult.data && (cfgResult.data.share === "auto" || Flag.CRAZYCODE_AUTO_SHARE || args.share)) {
         const shareResult = await sdk.session.share({ sessionID }).catch((error) => {
           if (error instanceof Error && error.message.includes("disabled")) {
             UI.println(UI.Style.TEXT_DANGER_BOLD + "!  " + error.message)
@@ -340,7 +340,7 @@ export const RunCommand = cmd({
 
     await bootstrap(process.cwd(), async () => {
       const server = Server.listen({ port: args.port ?? 0, hostname: "127.0.0.1" })
-      const sdk = createOpencodeClient({ baseUrl: `http://${server.hostname}:${server.port}` })
+      const sdk = createCrazycodeClient({ baseUrl: `http://${server.hostname}:${server.port}` })
 
       if (args.command) {
         const exists = await Command.get(args.command)
@@ -376,7 +376,7 @@ export const RunCommand = cmd({
       }
 
       const cfgResult = await sdk.config.get()
-      if (cfgResult.data && (cfgResult.data.share === "auto" || Flag.OPENCODE_AUTO_SHARE || args.share)) {
+      if (cfgResult.data && (cfgResult.data.share === "auto" || Flag.CRAZYCODE_AUTO_SHARE || args.share)) {
         const shareResult = await sdk.session.share({ sessionID }).catch((error) => {
           if (error instanceof Error && error.message.includes("disabled")) {
             UI.println(UI.Style.TEXT_DANGER_BOLD + "!  " + error.message)

@@ -26,7 +26,7 @@ import { Auth } from "@/auth"
 export namespace LLM {
   const log = Log.create({ service: "llm" })
 
-  export const OUTPUT_TOKEN_MAX = Flag.OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX || 32_000
+  export const OUTPUT_TOKEN_MAX = Flag.CRAZYCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX || 32_000
 
   export type StreamInput = {
     user: MessageV2.User
@@ -172,17 +172,17 @@ export namespace LLM {
       headers: {
         ...(isCodex
           ? {
-              originator: "opencode",
-              "User-Agent": `opencode/${Installation.VERSION} (${os.platform()} ${os.release()}; ${os.arch()})`,
+              originator: "crazycode",
+              "User-Agent": `crazycode/${Installation.VERSION} (${os.platform()} ${os.release()}; ${os.arch()})`,
               session_id: input.sessionID,
             }
           : undefined),
-        ...(input.model.providerID.startsWith("opencode")
+        ...(input.model.providerID.startsWith("crazycode")
           ? {
-              "x-opencode-project": Instance.project.id,
-              "x-opencode-session": input.sessionID,
-              "x-opencode-request": input.user.id,
-              "x-opencode-client": Flag.OPENCODE_CLIENT,
+              "x-crazycode-project": Instance.project.id,
+              "x-crazycode-session": input.sessionID,
+              "x-crazycode-request": input.user.id,
+              "x-crazycode-client": Flag.CRAZYCODE_CLIENT,
             }
           : undefined),
         ...input.model.headers,

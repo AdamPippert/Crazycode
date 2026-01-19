@@ -1,8 +1,8 @@
-import type { Hooks, PluginInput, Plugin as PluginInstance } from "@opencode-ai/plugin"
+import type { Hooks, PluginInput, Plugin as PluginInstance } from "@crazycode-ai/plugin"
 import { Config } from "../config/config"
 import { Bus } from "../bus"
 import { Log } from "../util/log"
-import { createOpencodeClient } from "@opencode-ai/sdk"
+import { createCrazycodeClient } from "@crazycode-ai/sdk"
 import { Server } from "../server/server"
 import { BunProc } from "../bun"
 import { Instance } from "../project/instance"
@@ -12,13 +12,13 @@ import { CodexAuthPlugin } from "./codex"
 export namespace Plugin {
   const log = Log.create({ service: "plugin" })
 
-  const BUILTIN = ["opencode-copilot-auth@0.0.11", "opencode-anthropic-auth@0.0.8"]
+  const BUILTIN = ["crazycode-copilot-auth@0.0.11", "crazycode-anthropic-auth@0.0.8"]
 
   // Built-in plugins that are directly imported (not installed from npm)
   const INTERNAL_PLUGINS: PluginInstance[] = [CodexAuthPlugin]
 
   const state = Instance.state(async () => {
-    const client = createOpencodeClient({
+    const client = createCrazycodeClient({
       baseUrl: "http://localhost:4096",
       // @ts-ignore - fetch type incompatibility
       fetch: async (...args) => Server.App().fetch(...args),
@@ -35,7 +35,7 @@ export namespace Plugin {
     }
 
     // Load internal plugins first
-    if (!Flag.OPENCODE_DISABLE_DEFAULT_PLUGINS) {
+    if (!Flag.CRAZYCODE_DISABLE_DEFAULT_PLUGINS) {
       for (const plugin of INTERNAL_PLUGINS) {
         log.info("loading internal plugin", { name: plugin.name })
         const init = await plugin(input)
@@ -44,12 +44,12 @@ export namespace Plugin {
     }
 
     const plugins = [...(config.plugin ?? [])]
-    if (!Flag.OPENCODE_DISABLE_DEFAULT_PLUGINS) {
+    if (!Flag.CRAZYCODE_DISABLE_DEFAULT_PLUGINS) {
       plugins.push(...BUILTIN)
     }
     for (let plugin of plugins) {
       // ignore old codex plugin since it is supported first party now
-      if (plugin.includes("opencode-openai-codex-auth")) continue
+      if (plugin.includes("crazycode-openai-codex-auth")) continue
       log.info("loading plugin", { path: plugin })
       if (!plugin.startsWith("file://")) {
         const lastAtIndex = plugin.lastIndexOf("@")

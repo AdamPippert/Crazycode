@@ -8,7 +8,7 @@ import { Log } from "../util/log"
 import { Flag } from "@/flag/flag"
 import { Session } from "../session"
 import { work } from "../util/queue"
-import { fn } from "@opencode-ai/util/fn"
+import { fn } from "@crazycode-ai/util/fn"
 import { BusEvent } from "@/bus/bus-event"
 import { iife } from "@/util/iife"
 import { GlobalBus } from "@/bus/global"
@@ -57,7 +57,7 @@ export namespace Project {
         const gitBinary = Bun.which("git")
 
         // cached id calculation
-        let id = await Bun.file(path.join(git, "opencode"))
+        let id = await Bun.file(path.join(git, "crazycode"))
           .text()
           .then((x) => x.trim())
           .catch(() => undefined)
@@ -67,7 +67,7 @@ export namespace Project {
             id: id ?? "global",
             worktree: sandbox,
             sandbox: sandbox,
-            vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+            vcs: Info.shape.vcs.parse(Flag.CRAZYCODE_FAKE_VCS),
           }
         }
 
@@ -92,13 +92,13 @@ export namespace Project {
               id: "global",
               worktree: sandbox,
               sandbox: sandbox,
-              vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+              vcs: Info.shape.vcs.parse(Flag.CRAZYCODE_FAKE_VCS),
             }
           }
 
           id = roots[0]
           if (id) {
-            void Bun.file(path.join(git, "opencode"))
+            void Bun.file(path.join(git, "crazycode"))
               .write(id)
               .catch(() => undefined)
           }
@@ -126,7 +126,7 @@ export namespace Project {
             id,
             sandbox,
             worktree: sandbox,
-            vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+            vcs: Info.shape.vcs.parse(Flag.CRAZYCODE_FAKE_VCS),
           }
         }
 
@@ -149,7 +149,7 @@ export namespace Project {
             id,
             sandbox,
             worktree: sandbox,
-            vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+            vcs: Info.shape.vcs.parse(Flag.CRAZYCODE_FAKE_VCS),
           }
         }
 
@@ -165,7 +165,7 @@ export namespace Project {
         id: "global",
         worktree: "/",
         sandbox: "/",
-        vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+        vcs: Info.shape.vcs.parse(Flag.CRAZYCODE_FAKE_VCS),
       }
     })
 
@@ -189,7 +189,7 @@ export namespace Project {
     // migrate old projects before sandboxes
     if (!existing.sandboxes) existing.sandboxes = []
 
-    if (Flag.OPENCODE_EXPERIMENTAL_ICON_DISCOVERY) discover(existing)
+    if (Flag.CRAZYCODE_EXPERIMENTAL_ICON_DISCOVERY) discover(existing)
     const result: Info = {
       ...existing,
       worktree,

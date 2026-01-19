@@ -26,8 +26,8 @@ mock.module("@aws-sdk/credential-providers", () => ({
 }))
 
 const mockPlugin = () => ({})
-mock.module("opencode-copilot-auth", () => ({ default: mockPlugin }))
-mock.module("opencode-anthropic-auth", () => ({ default: mockPlugin }))
+mock.module("crazycode-copilot-auth", () => ({ default: mockPlugin }))
+mock.module("crazycode-anthropic-auth", () => ({ default: mockPlugin }))
 
 // Import after mocks are set up
 const { tmpdir } = await import("../fixture/fixture")
@@ -40,9 +40,9 @@ test("Bedrock: config region takes precedence over AWS_REGION env var", async ()
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           provider: {
             "amazon-bedrock": {
               options: {
@@ -72,9 +72,9 @@ test("Bedrock: falls back to AWS_REGION env var when no config region", async ()
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
         }),
       )
     },
@@ -97,9 +97,9 @@ test("Bedrock: loads when bearer token from auth.json is present", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           provider: {
             "amazon-bedrock": {
               options: {
@@ -142,9 +142,9 @@ test("Bedrock: config profile takes precedence over AWS_PROFILE env var", async 
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           provider: {
             "amazon-bedrock": {
               options: {
@@ -175,9 +175,9 @@ test("Bedrock: includes custom endpoint in options when specified", async () => 
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           provider: {
             "amazon-bedrock": {
               options: {

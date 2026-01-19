@@ -85,7 +85,7 @@ export namespace Agent {
             question: "allow",
             edit: {
               "*": "deny",
-              ".opencode/plan/*.md": "allow",
+              ".crazycode/plan/*.md": "allow",
             },
           }),
           user,

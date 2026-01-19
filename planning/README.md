@@ -37,23 +37,16 @@ CrazyCode is evolving from a reactive assistant into a **persistent, self-improv
 
 ## Specifications
 
-### Completed
-
-| Spec | File | Status |
-|------|------|--------|
-| Evo-Memory | [evo-memory-spec.md](./evo-memory-spec.md) | ✅ Ready |
-| Orchestration Loop | [orchestration-loop-spec.md](./orchestration-loop-spec.md) | ✅ Ready |
-
-### Planned
-
-| Spec | Description | Priority |
-|------|-------------|----------|
-| MAGMA | Multi-Graph Memory Architecture | High |
-| AgentReuse | Semantic Plan Caching | High |
-| Adaptive Coordination | Parallel agents, upstream revision, runtime rerouting | Medium |
-| Hierarchical Tasks | Task trees with pause/resume/override | Medium |
-| Verification & Confidence | Evaluator pipeline with autonomy gating | High |
-| Context Engineering (ADK) | Artifact system and context compiler | High |
+| Spec | File | Description | Priority | Status |
+|------|------|-------------|----------|--------|
+| Evo-Memory | [evo-memory-spec.md](./evo-memory-spec.md) | Self-evolving experience memory | High | ✅ Ready |
+| Orchestration Loop | [orchestration-loop-spec.md](./orchestration-loop-spec.md) | Minimal v0 agent loop | High | ✅ Ready |
+| MAGMA | [magma-spec.md](./magma-spec.md) | Multi-Graph Memory Architecture | High | ✅ Ready |
+| AgentReuse | [agent-reuse-spec.md](./agent-reuse-spec.md) | Semantic Plan Caching | High | ✅ Ready |
+| Verification & Confidence | [verification-confidence-spec.md](./verification-confidence-spec.md) | Evaluator pipeline with autonomy gating | High | ✅ Ready |
+| Context Engineering (ADK) | [context-engineering-adk-spec.md](./context-engineering-adk-spec.md) | Artifact system and context compiler | High | ✅ Ready |
+| Adaptive Coordination | [adaptive-coordination-spec.md](./adaptive-coordination-spec.md) | Parallel agents, runtime rerouting | Medium | ✅ Ready |
+| Hierarchical Tasks | [hierarchical-tasks-spec.md](./hierarchical-tasks-spec.md) | Task trees with pause/resume | Medium | ✅ Ready |
 
 ## Execution Roadmap
 

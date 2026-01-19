@@ -22,9 +22,9 @@ test("loads JSON config file", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           model: "test/model",
           username: "testuser",
         }),
@@ -45,10 +45,10 @@ test("loads JSONC config file", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.jsonc"),
+        path.join(dir, "crazycode.jsonc"),
         `{
         // This is a comment
-        "$schema": "https://opencode.ai/config.json",
+        "$schema": "https://crazycode.ai/config.json",
         "model": "test/model",
         "username": "testuser"
       }`,
@@ -69,17 +69,17 @@ test("merges multiple config files with correct precedence", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.jsonc"),
+        path.join(dir, "crazycode.jsonc"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           model: "base",
           username: "base",
         }),
       )
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           model: "override",
         }),
       )
@@ -103,9 +103,9 @@ test("handles environment variable substitution", async () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
         await Bun.write(
-          path.join(dir, "opencode.json"),
+          path.join(dir, "crazycode.json"),
           JSON.stringify({
-            $schema: "https://opencode.ai/config.json",
+            $schema: "https://crazycode.ai/config.json",
             theme: "{env:TEST_VAR}",
           }),
         )
@@ -132,9 +132,9 @@ test("handles file inclusion substitution", async () => {
     init: async (dir) => {
       await Bun.write(path.join(dir, "included.txt"), "test_theme")
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           theme: "{file:included.txt}",
         }),
       )
@@ -153,9 +153,9 @@ test("validates config schema and throws on invalid fields", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           invalid_field: "should cause error",
         }),
       )
@@ -173,7 +173,7 @@ test("validates config schema and throws on invalid fields", async () => {
 test("throws error for invalid JSON", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      await Bun.write(path.join(dir, "opencode.json"), "{ invalid json }")
+      await Bun.write(path.join(dir, "crazycode.json"), "{ invalid json }")
     },
   })
   await Instance.provide({
@@ -188,9 +188,9 @@ test("handles agent configuration", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test_agent: {
               model: "test/model",
@@ -221,9 +221,9 @@ test("handles command configuration", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           command: {
             test_command: {
               template: "test template",
@@ -252,9 +252,9 @@ test("migrates autoshare to share field", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           autoshare: true,
         }),
       )
@@ -274,9 +274,9 @@ test("migrates mode field to agent field", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           mode: {
             test_mode: {
               model: "test/model",
@@ -302,10 +302,10 @@ test("migrates mode field to agent field", async () => {
   })
 })
 
-test("loads config from .opencode directory", async () => {
+test("loads config from .crazycode directory", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".opencode")
+      const opencodeDir = path.join(dir, ".crazycode")
       await fs.mkdir(opencodeDir, { recursive: true })
       const agentDir = path.join(opencodeDir, "agent")
       await fs.mkdir(agentDir, { recursive: true })
@@ -387,8 +387,8 @@ test("resolves scoped npm plugins in config", async () => {
       await Bun.write(path.join(pluginDir, "index.js"), "export default {}\n")
 
       await Bun.write(
-        path.join(dir, "opencode.json"),
-        JSON.stringify({ $schema: "https://opencode.ai/config.json", plugin: ["@scope/plugin"] }, null, 2),
+        path.join(dir, "crazycode.json"),
+        JSON.stringify({ $schema: "https://crazycode.ai/config.json", plugin: ["@scope/plugin"] }, null, 2),
       )
     },
   })
@@ -399,7 +399,7 @@ test("resolves scoped npm plugins in config", async () => {
       const config = await Config.get()
       const pluginEntries = config.plugin ?? []
 
-      const baseUrl = pathToFileURL(path.join(tmp.path, "opencode.json")).href
+      const baseUrl = pathToFileURL(path.join(tmp.path, "crazycode.json")).href
       const expected = import.meta.resolve("@scope/plugin", baseUrl)
 
       expect(pluginEntries.includes(expected)).toBe(true)
@@ -414,25 +414,25 @@ test("resolves scoped npm plugins in config", async () => {
 test("merges plugin arrays from global and local configs", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      // Create a nested project structure with local .opencode config
+      // Create a nested project structure with local .crazycode config
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".crazycode")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       // Global config with plugins
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           plugin: ["global-plugin-1", "global-plugin-2"],
         }),
       )
 
-      // Local .opencode config with different plugins
+      // Local .crazycode config with different plugins
       await Bun.write(
-        path.join(opencodeDir, "opencode.json"),
+        path.join(opencodeDir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           plugin: ["local-plugin-1"],
         }),
       )
@@ -460,7 +460,7 @@ test("merges plugin arrays from global and local configs", async () => {
 test("does not error when only custom agent is a subagent", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".opencode")
+      const opencodeDir = path.join(dir, ".crazycode")
       await fs.mkdir(opencodeDir, { recursive: true })
       const agentDir = path.join(opencodeDir, "agent")
       await fs.mkdir(agentDir, { recursive: true })
@@ -493,21 +493,21 @@ test("merges instructions arrays from global and local configs", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".crazycode")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           instructions: ["global-instructions.md", "shared-rules.md"],
         }),
       )
 
       await Bun.write(
-        path.join(opencodeDir, "opencode.json"),
+        path.join(opencodeDir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           instructions: ["local-instructions.md"],
         }),
       )
@@ -532,21 +532,21 @@ test("deduplicates duplicate instructions from global and local configs", async 
   await using tmp = await tmpdir({
     init: async (dir) => {
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".crazycode")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           instructions: ["duplicate.md", "global-only.md"],
         }),
       )
 
       await Bun.write(
-        path.join(opencodeDir, "opencode.json"),
+        path.join(opencodeDir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           instructions: ["duplicate.md", "local-only.md"],
         }),
       )
@@ -573,25 +573,25 @@ test("deduplicates duplicate instructions from global and local configs", async 
 test("deduplicates duplicate plugins from global and local configs", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      // Create a nested project structure with local .opencode config
+      // Create a nested project structure with local .crazycode config
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".crazycode")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       // Global config with plugins
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           plugin: ["duplicate-plugin", "global-plugin-1"],
         }),
       )
 
-      // Local .opencode config with some overlapping plugins
+      // Local .crazycode config with some overlapping plugins
       await Bun.write(
-        path.join(opencodeDir, "opencode.json"),
+        path.join(opencodeDir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           plugin: ["duplicate-plugin", "local-plugin-1"],
         }),
       )
@@ -628,9 +628,9 @@ test("migrates legacy tools config to permissions - allow", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               tools: {
@@ -659,9 +659,9 @@ test("migrates legacy tools config to permissions - deny", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               tools: {
@@ -690,9 +690,9 @@ test("migrates legacy write tool to edit permission", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               tools: {
@@ -719,9 +719,9 @@ test("migrates legacy edit tool to edit permission", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               tools: {
@@ -748,9 +748,9 @@ test("migrates legacy patch tool to edit permission", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               tools: {
@@ -777,9 +777,9 @@ test("migrates legacy multiedit tool to edit permission", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               tools: {
@@ -806,9 +806,9 @@ test("migrates mixed legacy tools config", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               tools: {
@@ -841,9 +841,9 @@ test("merges legacy tools with existing permission config", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           agent: {
             test: {
               permission: {
@@ -874,9 +874,9 @@ test("permission config preserves key order", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           permission: {
             "*": "deny",
             edit: "ask",
@@ -922,9 +922,9 @@ test("project config can override MCP server enabled status", async () => {
     init: async (dir) => {
       // Simulates a base config (like from remote .well-known) with disabled MCP
       await Bun.write(
-        path.join(dir, "opencode.jsonc"),
+        path.join(dir, "crazycode.jsonc"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           mcp: {
             jira: {
               type: "remote",
@@ -941,9 +941,9 @@ test("project config can override MCP server enabled status", async () => {
       )
       // Project config enables just jira
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           mcp: {
             jira: {
               type: "remote",
@@ -980,9 +980,9 @@ test("MCP config deep merges preserving base config properties", async () => {
     init: async (dir) => {
       // Base config with full MCP definition
       await Bun.write(
-        path.join(dir, "opencode.jsonc"),
+        path.join(dir, "crazycode.jsonc"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           mcp: {
             myserver: {
               type: "remote",
@@ -997,9 +997,9 @@ test("MCP config deep merges preserving base config properties", async () => {
       )
       // Override just enables it, should preserve other properties
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           mcp: {
             myserver: {
               type: "remote",
@@ -1027,14 +1027,14 @@ test("MCP config deep merges preserving base config properties", async () => {
   })
 })
 
-test("local .opencode config can override MCP from project config", async () => {
+test("local .crazycode config can override MCP from project config", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       // Project config with disabled MCP
       await Bun.write(
-        path.join(dir, "opencode.json"),
+        path.join(dir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           mcp: {
             docs: {
               type: "remote",
@@ -1044,13 +1044,13 @@ test("local .opencode config can override MCP from project config", async () => 
           },
         }),
       )
-      // Local .opencode directory config enables it
-      const opencodeDir = path.join(dir, ".opencode")
+      // Local .crazycode directory config enables it
+      const opencodeDir = path.join(dir, ".crazycode")
       await fs.mkdir(opencodeDir, { recursive: true })
       await Bun.write(
-        path.join(opencodeDir, "opencode.json"),
+        path.join(opencodeDir, "crazycode.json"),
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://crazycode.ai/config.json",
           mcp: {
             docs: {
               type: "remote",
@@ -1116,9 +1116,9 @@ test("project config overrides remote well-known config", async () => {
       init: async (dir) => {
         // Project config enables jira (overriding remote default)
         await Bun.write(
-          path.join(dir, "opencode.json"),
+          path.join(dir, "crazycode.json"),
           JSON.stringify({
-            $schema: "https://opencode.ai/config.json",
+            $schema: "https://crazycode.ai/config.json",
             mcp: {
               jira: {
                 type: "remote",
@@ -1154,14 +1154,14 @@ describe("getPluginName", () => {
   })
 
   test("extracts name from npm package with version", () => {
-    expect(Config.getPluginName("oh-my-opencode@2.4.3")).toBe("oh-my-opencode")
+    expect(Config.getPluginName("oh-my-crazycode@2.4.3")).toBe("oh-my-crazycode")
     expect(Config.getPluginName("some-plugin@1.0.0")).toBe("some-plugin")
     expect(Config.getPluginName("plugin@latest")).toBe("plugin")
   })
 
   test("extracts name from scoped npm package", () => {
     expect(Config.getPluginName("@scope/pkg@1.0.0")).toBe("@scope/pkg")
-    expect(Config.getPluginName("@opencode/plugin@2.0.0")).toBe("@opencode/plugin")
+    expect(Config.getPluginName("@crazycode/plugin@2.0.0")).toBe("@crazycode/plugin")
   })
 
   test("returns full string for package without version", () => {
@@ -1184,12 +1184,12 @@ describe("deduplicatePlugins", () => {
   })
 
   test("prefers local file over npm package with same name", () => {
-    const plugins = ["oh-my-opencode@2.4.3", "file:///project/.opencode/plugin/oh-my-opencode.js"]
+    const plugins = ["oh-my-crazycode@2.4.3", "file:///project/.crazycode/plugin/oh-my-crazycode.js"]
 
     const result = Config.deduplicatePlugins(plugins)
 
     expect(result.length).toBe(1)
-    expect(result[0]).toBe("file:///project/.opencode/plugin/oh-my-opencode.js")
+    expect(result[0]).toBe("file:///project/.crazycode/plugin/oh-my-crazycode.js")
   })
 
   test("preserves order of remaining plugins", () => {
@@ -1200,18 +1200,18 @@ describe("deduplicatePlugins", () => {
     expect(result).toEqual(["a-plugin@1.0.0", "b-plugin@1.0.0", "c-plugin@1.0.0"])
   })
 
-  test("local plugin directory overrides global opencode.json plugin", async () => {
+  test("local plugin directory overrides global crazycode.json plugin", async () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
         const projectDir = path.join(dir, "project")
-        const opencodeDir = path.join(projectDir, ".opencode")
+        const opencodeDir = path.join(projectDir, ".crazycode")
         const pluginDir = path.join(opencodeDir, "plugin")
         await fs.mkdir(pluginDir, { recursive: true })
 
         await Bun.write(
-          path.join(dir, "opencode.json"),
+          path.join(dir, "crazycode.json"),
           JSON.stringify({
-            $schema: "https://opencode.ai/config.json",
+            $schema: "https://crazycode.ai/config.json",
             plugin: ["my-plugin@1.0.0"],
           }),
         )

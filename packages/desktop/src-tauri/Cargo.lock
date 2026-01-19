@@ -2789,7 +2789,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "opencode-desktop"
+name = "crazycode-desktop"
 version = "0.0.0"
 dependencies = [
  "futures",

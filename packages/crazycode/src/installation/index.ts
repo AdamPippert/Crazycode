@@ -2,14 +2,14 @@ import { BusEvent } from "@/bus/bus-event"
 import path from "path"
 import { $ } from "bun"
 import z from "zod"
-import { NamedError } from "@opencode-ai/util/error"
+import { NamedError } from "@crazycode-ai/util/error"
 import { Log } from "../util/log"
 import { iife } from "@/util/iife"
 import { Flag } from "../flag/flag"
 
 declare global {
-  const OPENCODE_VERSION: string
-  const OPENCODE_CHANNEL: string
+  const CRAZYCODE_VERSION: string
+  const CRAZYCODE_CHANNEL: string
 }
 
 export namespace Installation {
@@ -58,7 +58,7 @@ export namespace Installation {
   }
 
   export async function method() {
-    if (process.execPath.includes(path.join(".opencode", "bin"))) return "curl"
+    if (process.execPath.includes(path.join(".crazycode", "bin"))) return "curl"
     if (process.execPath.includes(path.join(".local", "bin"))) return "curl"
     const exec = process.execPath.toLowerCase()
 
@@ -81,7 +81,7 @@ export namespace Installation {
       },
       {
         name: "brew" as const,
-        command: () => $`brew list --formula opencode`.throws(false).quiet().text(),
+        command: () => $`brew list --formula crazycode`.throws(false).quiet().text(),
       },
     ]
 
@@ -95,7 +95,7 @@ export namespace Installation {
 
     for (const check of checks) {
       const output = await check.command()
-      if (output.includes(check.name === "brew" ? "opencode" : "opencode-ai")) {
+      if (output.includes(check.name === "brew" ? "crazycode" : "crazycode-ai")) {
         return check.name
       }
     }
@@ -111,30 +111,30 @@ export namespace Installation {
   )
 
   async function getBrewFormula() {
-    const tapFormula = await $`brew list --formula anomalyco/tap/opencode`.throws(false).quiet().text()
-    if (tapFormula.includes("opencode")) return "anomalyco/tap/opencode"
-    const coreFormula = await $`brew list --formula opencode`.throws(false).quiet().text()
-    if (coreFormula.includes("opencode")) return "opencode"
-    return "opencode"
+    const tapFormula = await $`brew list --formula AdamPippert/tap/crazycode`.throws(false).quiet().text()
+    if (tapFormula.includes("crazycode")) return "AdamPippert/tap/crazycode"
+    const coreFormula = await $`brew list --formula crazycode`.throws(false).quiet().text()
+    if (coreFormula.includes("crazycode")) return "crazycode"
+    return "crazycode"
   }
 
   export async function upgrade(method: Method, target: string) {
     let cmd
     switch (method) {
       case "curl":
-        cmd = $`curl -fsSL https://opencode.ai/install | bash`.env({
+        cmd = $`curl -fsSL https://crazycode.ai/install | bash`.env({
           ...process.env,
           VERSION: target,
         })
         break
       case "npm":
-        cmd = $`npm install -g opencode-ai@${target}`
+        cmd = $`npm install -g crazycode-ai@${target}`
         break
       case "pnpm":
-        cmd = $`pnpm install -g opencode-ai@${target}`
+        cmd = $`pnpm install -g crazycode-ai@${target}`
         break
       case "bun":
-        cmd = $`bun install -g opencode-ai@${target}`
+        cmd = $`bun install -g crazycode-ai@${target}`
         break
       case "brew": {
         const formula = await getBrewFormula()
@@ -161,17 +161,17 @@ export namespace Installation {
     await $`${process.execPath} --version`.nothrow().quiet().text()
   }
 
-  export const VERSION = typeof OPENCODE_VERSION === "string" ? OPENCODE_VERSION : "local"
-  export const CHANNEL = typeof OPENCODE_CHANNEL === "string" ? OPENCODE_CHANNEL : "local"
-  export const USER_AGENT = `opencode/${CHANNEL}/${VERSION}/${Flag.OPENCODE_CLIENT}`
+  export const VERSION = typeof CRAZYCODE_VERSION === "string" ? CRAZYCODE_VERSION : "local"
+  export const CHANNEL = typeof CRAZYCODE_CHANNEL === "string" ? CRAZYCODE_CHANNEL : "local"
+  export const USER_AGENT = `crazycode/${CHANNEL}/${VERSION}/${Flag.CRAZYCODE_CLIENT}`
 
   export async function latest(installMethod?: Method) {
     const detectedMethod = installMethod || (await method())
 
     if (detectedMethod === "brew") {
       const formula = await getBrewFormula()
-      if (formula === "opencode") {
-        return fetch("https://formulae.brew.sh/api/formula/opencode.json")
+      if (formula === "crazycode") {
+        return fetch("https://formulae.brew.sh/api/formula/crazycode.json")
           .then((res) => {
             if (!res.ok) throw new Error(res.statusText)
             return res.json()
@@ -187,7 +187,7 @@ export namespace Installation {
         return reg.endsWith("/") ? reg.slice(0, -1) : reg
       })
       const channel = CHANNEL
-      return fetch(`${registry}/opencode-ai/${channel}`)
+      return fetch(`${registry}/crazycode-ai/${channel}`)
         .then((res) => {
           if (!res.ok) throw new Error(res.statusText)
           return res.json()
@@ -195,7 +195,7 @@ export namespace Installation {
         .then((data: any) => data.version)
     }
 
-    return fetch("https://api.github.com/repos/anomalyco/opencode/releases/latest")
+    return fetch("https://api.github.com/repos/AdamPippert/Crazycode/releases/latest")
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText)
         return res.json()

@@ -11,7 +11,7 @@ import { Session } from "../session"
 import z from "zod"
 import { Provider } from "../provider/provider"
 import { filter, mapValues, sortBy, pipe } from "remeda"
-import { NamedError } from "@opencode-ai/util/error"
+import { NamedError } from "@crazycode-ai/util/error"
 import { ModelsDev } from "../provider/models"
 import { Ripgrep } from "../file/ripgrep"
 import { Config } from "../config/config"
@@ -119,8 +119,8 @@ export namespace Server {
               if (input.startsWith("http://127.0.0.1:")) return input
               if (input === "tauri://localhost" || input === "http://tauri.localhost") return input
 
-              // *.opencode.ai (https only, adjust if needed)
-              if (/^https:\/\/([a-z0-9-]+\.)*opencode\.ai$/.test(input)) {
+              // *.crazycode.ai (https only, adjust if needed)
+              if (/^https:\/\/([a-z0-9-]+\.)*crazycode\.ai$/.test(input)) {
                 return input
               }
               if (_corsWhitelist.includes(input)) {
@@ -135,7 +135,7 @@ export namespace Server {
           "/global/health",
           describeRoute({
             summary: "Get health",
-            description: "Get health information about the OpenCode server.",
+            description: "Get health information about the CrazyCode server.",
             operationId: "global.health",
             responses: {
               200: {
@@ -156,7 +156,7 @@ export namespace Server {
           "/global/event",
           describeRoute({
             summary: "Get global events",
-            description: "Subscribe to global events from the OpenCode system using server-sent events.",
+            description: "Subscribe to global events from the CrazyCode system using server-sent events.",
             operationId: "global.event",
             responses: {
               200: {
@@ -223,7 +223,7 @@ export namespace Server {
           "/global/dispose",
           describeRoute({
             summary: "Dispose instance",
-            description: "Clean up and dispose all OpenCode instances, releasing all resources.",
+            description: "Clean up and dispose all CrazyCode instances, releasing all resources.",
             operationId: "global.dispose",
             responses: {
               200: {
@@ -249,7 +249,7 @@ export namespace Server {
           },
         )
         .use(async (c, next) => {
-          let directory = c.req.query("directory") || c.req.header("x-opencode-directory") || process.cwd()
+          let directory = c.req.query("directory") || c.req.header("x-crazycode-directory") || process.cwd()
           try {
             directory = decodeURIComponent(directory)
           } catch {
@@ -268,9 +268,9 @@ export namespace Server {
           openAPIRouteHandler(app, {
             documentation: {
               info: {
-                title: "opencode",
+                title: "crazycode",
                 version: "0.0.3",
-                description: "opencode api",
+                description: "crazycode api",
               },
               openapi: "3.1.1",
             },
@@ -284,7 +284,7 @@ export namespace Server {
           "/pty",
           describeRoute({
             summary: "List PTY sessions",
-            description: "Get a list of all active pseudo-terminal (PTY) sessions managed by OpenCode.",
+            description: "Get a list of all active pseudo-terminal (PTY) sessions managed by CrazyCode.",
             operationId: "pty.list",
             responses: {
               200: {
@@ -443,7 +443,7 @@ export namespace Server {
           "/config",
           describeRoute({
             summary: "Get configuration",
-            description: "Retrieve the current OpenCode configuration settings and preferences.",
+            description: "Retrieve the current CrazyCode configuration settings and preferences.",
             operationId: "config.get",
             responses: {
               200: {
@@ -465,7 +465,7 @@ export namespace Server {
           "/config",
           describeRoute({
             summary: "Update configuration",
-            description: "Update OpenCode configuration settings and preferences.",
+            description: "Update CrazyCode configuration settings and preferences.",
             operationId: "config.update",
             responses: {
               200: {
@@ -564,7 +564,7 @@ export namespace Server {
           "/instance/dispose",
           describeRoute({
             summary: "Dispose instance",
-            description: "Clean up and dispose the current OpenCode instance, releasing all resources.",
+            description: "Clean up and dispose the current CrazyCode instance, releasing all resources.",
             operationId: "instance.dispose",
             responses: {
               200: {
@@ -587,7 +587,7 @@ export namespace Server {
           describeRoute({
             summary: "Get paths",
             description:
-              "Retrieve the current working directory and related path information for the OpenCode instance.",
+              "Retrieve the current working directory and related path information for the CrazyCode instance.",
             operationId: "path.get",
             responses: {
               200: {
@@ -698,7 +698,7 @@ export namespace Server {
           "/session",
           describeRoute({
             summary: "List sessions",
-            description: "Get a list of all OpenCode sessions, sorted by most recently updated.",
+            description: "Get a list of all CrazyCode sessions, sorted by most recently updated.",
             operationId: "session.list",
             responses: {
               200: {
@@ -762,7 +762,7 @@ export namespace Server {
           "/session/:sessionID",
           describeRoute({
             summary: "Get session",
-            description: "Retrieve detailed information about a specific OpenCode session.",
+            description: "Retrieve detailed information about a specific CrazyCode session.",
             tags: ["Session"],
             operationId: "session.get",
             responses: {
@@ -855,7 +855,7 @@ export namespace Server {
           "/session",
           describeRoute({
             summary: "Create session",
-            description: "Create a new OpenCode session for interacting with AI assistants and managing conversations.",
+            description: "Create a new CrazyCode session for interacting with AI assistants and managing conversations.",
             operationId: "session.create",
             responses: {
               ...errors(400),
@@ -1699,7 +1699,7 @@ export namespace Server {
           "/command",
           describeRoute({
             summary: "List commands",
-            description: "Get a list of all available commands in the OpenCode system.",
+            description: "Get a list of all available commands in the CrazyCode system.",
             operationId: "command.list",
             responses: {
               200: {
@@ -2140,7 +2140,7 @@ export namespace Server {
           "/agent",
           describeRoute({
             summary: "List agents",
-            description: "Get a list of all available AI agents in the OpenCode system.",
+            description: "Get a list of all available AI agents in the CrazyCode system.",
             operationId: "app.agents",
             responses: {
               200: {
@@ -2820,11 +2820,11 @@ export namespace Server {
         )
         .all("/*", async (c) => {
           const path = c.req.path
-          const response = await proxy(`https://app.opencode.ai${path}`, {
+          const response = await proxy(`https://app.crazycode.ai${path}`, {
             ...c.req,
             headers: {
               ...c.req.raw.headers,
-              host: "app.opencode.ai",
+              host: "app.crazycode.ai",
             },
           })
           response.headers.set(
@@ -2840,9 +2840,9 @@ export namespace Server {
     const result = await generateSpecs(App() as Hono, {
       documentation: {
         info: {
-          title: "opencode",
+          title: "crazycode",
           version: "1.0.0",
-          description: "opencode api",
+          description: "crazycode api",
         },
         openapi: "3.1.1",
       },
@@ -2878,7 +2878,7 @@ export namespace Server {
       opts.hostname !== "localhost" &&
       opts.hostname !== "::1"
     if (shouldPublishMDNS) {
-      MDNS.publish(server.port!, `opencode-${server.port!}`)
+      MDNS.publish(server.port!, `crazycode-${server.port!}`)
     } else if (opts.mdns) {
       log.warn("mDNS enabled but hostname is loopback; skipping mDNS publish")
     }

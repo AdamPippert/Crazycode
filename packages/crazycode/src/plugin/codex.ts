@@ -1,4 +1,4 @@
-import type { Hooks, PluginInput } from "@opencode-ai/plugin"
+import type { Hooks, PluginInput } from "@crazycode-ai/plugin"
 import { Log } from "../util/log"
 import { OAUTH_DUMMY_KEY } from "../auth"
 import { ProviderTransform } from "../provider/transform"
@@ -93,7 +93,7 @@ function buildAuthorizeUrl(redirectUri: string, pkce: PkceCodes, state: string):
     id_token_add_organizations: "true",
     codex_cli_simplified_flow: "true",
     state,
-    originator: "opencode",
+    originator: "crazycode",
   })
   return `${ISSUER}/oauth/authorize?${params.toString()}`
 }
@@ -142,7 +142,7 @@ async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> 
 const HTML_SUCCESS = `<!doctype html>
 <html>
   <head>
-    <title>OpenCode - Codex Authorization Successful</title>
+    <title>CrazyCode - Codex Authorization Successful</title>
     <style>
       body {
         font-family:
@@ -173,7 +173,7 @@ const HTML_SUCCESS = `<!doctype html>
   <body>
     <div class="container">
       <h1>Authorization Successful</h1>
-      <p>You can close this window and return to OpenCode.</p>
+      <p>You can close this window and return to CrazyCode.</p>
     </div>
     <script>
       setTimeout(() => window.close(), 2000)
@@ -184,7 +184,7 @@ const HTML_SUCCESS = `<!doctype html>
 const HTML_ERROR = (error: string) => `<!doctype html>
 <html>
   <head>
-    <title>OpenCode - Codex Authorization Failed</title>
+    <title>CrazyCode - Codex Authorization Failed</title>
     <style>
       body {
         font-family:

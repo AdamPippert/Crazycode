@@ -9,7 +9,7 @@ import { mergeDeep, pipe, unique } from "remeda"
 import { Global } from "../global"
 import fs from "fs/promises"
 import { lazy } from "../util/lazy"
-import { NamedError } from "@opencode-ai/util/error"
+import { NamedError } from "@crazycode-ai/util/error"
 import { Flag } from "../flag/flag"
 import { Auth } from "../auth"
 import { type ParseError as JsoncParseError, parse as parseJsonc, printParseErrorCode } from "jsonc-parser"
@@ -44,18 +44,18 @@ export namespace Config {
     for (const [key, value] of Object.entries(auth)) {
       if (value.type === "wellknown") {
         process.env[value.key] = value.token
-        log.debug("fetching remote config", { url: `${key}/.well-known/opencode` })
-        const response = await fetch(`${key}/.well-known/opencode`)
+        log.debug("fetching remote config", { url: `${key}/.well-known/crazycode` })
+        const response = await fetch(`${key}/.well-known/crazycode`)
         if (!response.ok) {
           throw new Error(`failed to fetch remote config from ${key}: ${response.status}`)
         }
         const wellknown = (await response.json()) as any
         const remoteConfig = wellknown.config ?? {}
         // Add $schema to prevent load() from trying to write back to a non-existent file
-        if (!remoteConfig.$schema) remoteConfig.$schema = "https://opencode.ai/config.json"
+        if (!remoteConfig.$schema) remoteConfig.$schema = "https://crazycode.ai/config.json"
         result = mergeConfigConcatArrays(
           result,
-          await load(JSON.stringify(remoteConfig), `${key}/.well-known/opencode`),
+          await load(JSON.stringify(remoteConfig), `${key}/.well-known/crazycode`),
         )
         log.debug("loaded remote config from well-known", { url: key })
       }
@@ -65,13 +65,13 @@ export namespace Config {
     result = mergeConfigConcatArrays(result, await global())
 
     // Custom config path overrides global
-    if (Flag.OPENCODE_CONFIG) {
-      result = mergeConfigConcatArrays(result, await loadFile(Flag.OPENCODE_CONFIG))
-      log.debug("loaded custom config", { path: Flag.OPENCODE_CONFIG })
+    if (Flag.CRAZYCODE_CONFIG) {
+      result = mergeConfigConcatArrays(result, await loadFile(Flag.CRAZYCODE_CONFIG))
+      log.debug("loaded custom config", { path: Flag.CRAZYCODE_CONFIG })
     }
 
     // Project config has highest precedence (overrides global and remote)
-    for (const file of ["opencode.jsonc", "opencode.json"]) {
+    for (const file of ["crazycode.jsonc", "crazycode.json"]) {
       const found = await Filesystem.findUp(file, Instance.directory, Instance.worktree)
       for (const resolved of found.toReversed()) {
         result = mergeConfigConcatArrays(result, await loadFile(resolved))
@@ -79,9 +79,9 @@ export namespace Config {
     }
 
     // Inline config content has highest precedence
-    if (Flag.OPENCODE_CONFIG_CONTENT) {
-      result = mergeConfigConcatArrays(result, JSON.parse(Flag.OPENCODE_CONFIG_CONTENT))
-      log.debug("loaded custom config from OPENCODE_CONFIG_CONTENT")
+    if (Flag.CRAZYCODE_CONFIG_CONTENT) {
+      result = mergeConfigConcatArrays(result, JSON.parse(Flag.CRAZYCODE_CONFIG_CONTENT))
+      log.debug("loaded custom config from CRAZYCODE_CONFIG_CONTENT")
     }
 
     result.agent = result.agent || {}
@@ -92,28 +92,28 @@ export namespace Config {
       Global.Path.config,
       ...(await Array.fromAsync(
         Filesystem.up({
-          targets: [".opencode"],
+          targets: [".crazycode"],
           start: Instance.directory,
           stop: Instance.worktree,
         }),
       )),
       ...(await Array.fromAsync(
         Filesystem.up({
-          targets: [".opencode"],
+          targets: [".crazycode"],
           start: Global.Path.home,
           stop: Global.Path.home,
         }),
       )),
     ]
 
-    if (Flag.OPENCODE_CONFIG_DIR) {
-      directories.push(Flag.OPENCODE_CONFIG_DIR)
-      log.debug("loading config from OPENCODE_CONFIG_DIR", { path: Flag.OPENCODE_CONFIG_DIR })
+    if (Flag.CRAZYCODE_CONFIG_DIR) {
+      directories.push(Flag.CRAZYCODE_CONFIG_DIR)
+      log.debug("loading config from CRAZYCODE_CONFIG_DIR", { path: Flag.CRAZYCODE_CONFIG_DIR })
     }
 
     for (const dir of unique(directories)) {
-      if (dir.endsWith(".opencode") || dir === Flag.OPENCODE_CONFIG_DIR) {
-        for (const file of ["opencode.jsonc", "opencode.json"]) {
+      if (dir.endsWith(".crazycode") || dir === Flag.CRAZYCODE_CONFIG_DIR) {
+        for (const file of ["crazycode.jsonc", "crazycode.json"]) {
           log.debug(`loading config from ${path.join(dir, file)}`)
           result = mergeConfigConcatArrays(result, await loadFile(path.join(dir, file)))
           // to satisfy the type checker
@@ -143,8 +143,8 @@ export namespace Config {
       })
     }
 
-    if (Flag.OPENCODE_PERMISSION) {
-      result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.OPENCODE_PERMISSION))
+    if (Flag.CRAZYCODE_PERMISSION) {
+      result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.CRAZYCODE_PERMISSION))
     }
 
     // Backwards compatibility: legacy top-level `tools` config
@@ -171,10 +171,10 @@ export namespace Config {
     if (!result.keybinds) result.keybinds = Info.shape.keybinds.parse({})
 
     // Apply flag overrides for compaction settings
-    if (Flag.OPENCODE_DISABLE_AUTOCOMPACT) {
+    if (Flag.CRAZYCODE_DISABLE_AUTOCOMPACT) {
       result.compaction = { ...result.compaction, auto: false }
     }
-    if (Flag.OPENCODE_DISABLE_PRUNE) {
+    if (Flag.CRAZYCODE_DISABLE_PRUNE) {
       result.compaction = { ...result.compaction, prune: false }
     }
 
@@ -198,7 +198,7 @@ export namespace Config {
     if (!hasGitIgnore) await Bun.write(gitignore, ["node_modules", "package.json", "bun.lock", ".gitignore"].join("\n"))
 
     await BunProc.run(
-      ["add", "@opencode-ai/plugin@" + (Installation.isLocal() ? "latest" : Installation.VERSION), "--exact"],
+      ["add", "@crazycode-ai/plugin@" + (Installation.isLocal() ? "latest" : Installation.VERSION), "--exact"],
       {
         cwd: dir,
       },
@@ -222,7 +222,7 @@ export namespace Config {
       if (!md.data) continue
 
       const name = (() => {
-        const patterns = ["/.opencode/command/", "/command/"]
+        const patterns = ["/.crazycode/command/", "/command/"]
         const pattern = patterns.find((p) => item.includes(p))
 
         if (pattern) {
@@ -262,8 +262,8 @@ export namespace Config {
 
       // Extract relative path from agent folder for nested agents
       let agentName = path.basename(item, ".md")
-      const agentFolderPath = item.includes("/.opencode/agent/")
-        ? item.split("/.opencode/agent/")[1]
+      const agentFolderPath = item.includes("/.crazycode/agent/")
+        ? item.split("/.crazycode/agent/")[1]
         : item.includes("/agent/")
           ? item.split("/agent/")[1]
           : agentName + ".md"
@@ -341,7 +341,7 @@ export namespace Config {
    *
    * @example
    * getPluginName("file:///path/to/plugin/foo.js") // "foo"
-   * getPluginName("oh-my-opencode@2.4.3") // "oh-my-opencode"
+   * getPluginName("oh-my-crazycode@2.4.3") // "oh-my-crazycode"
    * getPluginName("@scope/pkg@1.0.0") // "@scope/pkg"
    */
   export function getPluginName(plugin: string): string {
@@ -359,20 +359,20 @@ export namespace Config {
    * Deduplicates plugins by name, with later entries (higher priority) winning.
    * Priority order (highest to lowest):
    * 1. Local plugin/ directory
-   * 2. Local opencode.json
+   * 2. Local crazycode.json
    * 3. Global plugin/ directory
-   * 4. Global opencode.json
+   * 4. Global crazycode.json
    *
    * Since plugins are added in low-to-high priority order,
    * we reverse, deduplicate (keeping first occurrence), then restore order.
    */
   export function deduplicatePlugins(plugins: string[]): string[] {
     // seenNames: canonical plugin names for duplicate detection
-    // e.g., "oh-my-opencode", "@scope/pkg"
+    // e.g., "oh-my-crazycode", "@scope/pkg"
     const seenNames = new Set<string>()
 
     // uniqueSpecifiers: full plugin specifiers to return
-    // e.g., "oh-my-opencode@2.4.3", "file:///path/to/plugin.js"
+    // e.g., "oh-my-crazycode@2.4.3", "file:///path/to/plugin.js"
     const uniqueSpecifiers: string[] = []
 
     for (const specifier of plugins.toReversed()) {
@@ -849,11 +849,11 @@ export namespace Config {
       keybinds: Keybinds.optional().describe("Custom keybind configurations"),
       logLevel: Log.Level.optional().describe("Log level"),
       tui: TUI.optional().describe("TUI specific settings"),
-      server: Server.optional().describe("Server configuration for opencode serve and web commands"),
+      server: Server.optional().describe("Server configuration for crazycode serve and web commands"),
       command: z
         .record(z.string(), Command)
         .optional()
-        .describe("Command configuration, see https://opencode.ai/docs/commands"),
+        .describe("Command configuration, see https://crazycode.ai/docs/commands"),
       watcher: z
         .object({
           ignore: z.array(z.string()).optional(),
@@ -920,7 +920,7 @@ export namespace Config {
         })
         .catchall(Agent)
         .optional()
-        .describe("Agent configuration, see https://opencode.ai/docs/agent"),
+        .describe("Agent configuration, see https://crazycode.ai/docs/agent"),
       provider: z
         .record(z.string(), Provider)
         .optional()
@@ -1060,8 +1060,8 @@ export namespace Config {
     let result: Info = pipe(
       {},
       mergeDeep(await loadFile(path.join(Global.Path.config, "config.json"))),
-      mergeDeep(await loadFile(path.join(Global.Path.config, "opencode.json"))),
-      mergeDeep(await loadFile(path.join(Global.Path.config, "opencode.jsonc"))),
+      mergeDeep(await loadFile(path.join(Global.Path.config, "crazycode.json"))),
+      mergeDeep(await loadFile(path.join(Global.Path.config, "crazycode.jsonc"))),
     )
 
     await import(path.join(Global.Path.config, "config"), {
@@ -1072,7 +1072,7 @@ export namespace Config {
       .then(async (mod) => {
         const { provider, model, ...rest } = mod.default
         if (provider && model) result.model = `${provider}/${model}`
-        result["$schema"] = "https://opencode.ai/config.json"
+        result["$schema"] = "https://crazycode.ai/config.json"
         result = mergeDeep(result, rest)
         await Bun.write(path.join(Global.Path.config, "config.json"), JSON.stringify(result, null, 2))
         await fs.unlink(path.join(Global.Path.config, "config"))
@@ -1163,7 +1163,7 @@ export namespace Config {
     const parsed = Info.safeParse(data)
     if (parsed.success) {
       if (!parsed.data.$schema) {
-        parsed.data.$schema = "https://opencode.ai/config.json"
+        parsed.data.$schema = "https://crazycode.ai/config.json"
         await Bun.write(configFilepath, JSON.stringify(parsed.data, null, 2))
       }
       const data = parsed.data

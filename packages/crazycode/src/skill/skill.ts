@@ -1,7 +1,7 @@
 import z from "zod"
 import { Config } from "../config/config"
 import { Instance } from "../project/instance"
-import { NamedError } from "@opencode-ai/util/error"
+import { NamedError } from "@crazycode-ai/util/error"
 import { ConfigMarkdown } from "../config/markdown"
 import { Log } from "../util/log"
 import { Global } from "@/global"
@@ -36,7 +36,7 @@ export namespace Skill {
     }),
   )
 
-  const OPENCODE_SKILL_GLOB = new Bun.Glob("{skill,skills}/**/SKILL.md")
+  const CRAZYCODE_SKILL_GLOB = new Bun.Glob("{skill,skills}/**/SKILL.md")
   const CLAUDE_SKILL_GLOB = new Bun.Glob("skills/**/SKILL.md")
 
   export const state = Instance.state(async () => {
@@ -81,7 +81,7 @@ export namespace Skill {
       claudeDirs.push(globalClaude)
     }
 
-    if (!Flag.OPENCODE_DISABLE_CLAUDE_CODE_SKILLS) {
+    if (!Flag.CRAZYCODE_DISABLE_CLAUDE_CODE_SKILLS) {
       for (const dir of claudeDirs) {
         const matches = await Array.fromAsync(
           CLAUDE_SKILL_GLOB.scan({
@@ -102,9 +102,9 @@ export namespace Skill {
       }
     }
 
-    // Scan .opencode/skill/ directories
+    // Scan .crazycode/skill/ directories
     for (const dir of await Config.directories()) {
-      for await (const match of OPENCODE_SKILL_GLOB.scan({
+      for await (const match of CRAZYCODE_SKILL_GLOB.scan({
         cwd: dir,
         absolute: true,
         onlyFiles: true,

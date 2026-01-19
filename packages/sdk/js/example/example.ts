@@ -1,7 +1,7 @@
-import { createOpencodeClient, createOpencodeServer } from "@opencode-ai/sdk"
+import { createCrazycodeClient, createCrazycodeServer } from "@crazycode-ai/sdk"
 
-const server = await createOpencodeServer()
-const client = createOpencodeClient({ baseUrl: server.url })
+const server = await createCrazycodeServer()
+const client = createCrazycodeClient({ baseUrl: server.url })
 
 const input = await Array.fromAsync(new Bun.Glob("packages/core/*.ts").scan())
 
