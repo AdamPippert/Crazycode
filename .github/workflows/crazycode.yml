@@ -13,7 +13,7 @@ jobs:
       startsWith(github.event.comment.body, '/crazy') ||
       contains(github.event.comment.body, ' /crazycode') ||
       startsWith(github.event.comment.body, '/crazycode')
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
@@ -28,7 +28,7 @@ jobs:
       - name: Run crazycode
         uses: ./github
         env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          OPENCODE_PERMISSION: '{"bash": "deny"}'
+          CRAZYCODE_API_KEY: ${{ secrets.CRAZYCODE_API_KEY }}
+          CRAZYCODE_PERMISSION: '{"bash": "deny"}'
         with:
-          model: opencode/claude-opus-4-5
+          model: crazycode/claude-opus-4-5
