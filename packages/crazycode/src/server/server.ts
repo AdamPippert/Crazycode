@@ -49,6 +49,7 @@ import { errors } from "./error"
 import { Pty } from "@/pty"
 import { PermissionNext } from "@/permission/next"
 import { QuestionRoute } from "./question"
+import { TaskFileRoute } from "./taskfile"
 import { Installation } from "@/installation"
 import { MDNS } from "./mdns"
 import { Worktree } from "../worktree"
@@ -1696,6 +1697,7 @@ export namespace Server {
           },
         )
         .route("/question", QuestionRoute)
+        .route("/taskfile", TaskFileRoute)
         .get(
           "/command",
           describeRoute({

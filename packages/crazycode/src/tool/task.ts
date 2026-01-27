@@ -11,6 +11,7 @@ import { iife } from "@/util/iife"
 import { defer } from "@/util/defer"
 import { Config } from "../config/config"
 import { PermissionNext } from "@/permission/next"
+import { TaskFile } from "../session/task-file"
 
 const parameters = z.object({
   description: z.string().describe("A short (3-5 words) description of the task"),
@@ -92,10 +93,26 @@ export const TaskTool = Tool.define("task", async (ctx) => {
       const msg = await MessageV2.get({ sessionID: ctx.sessionID, messageID: ctx.messageID })
       if (msg.info.role !== "assistant") throw new Error("Not an assistant message")
 
+      // Create task file entry to track sub-agent work
+      const taskFile = await TaskFile.create({
+        subject: params.description,
+        description: params.prompt,
+        sessionId: session.id,
+        parentSessionId: ctx.sessionID,
+        owner: params.subagent_type,
+        metadata: {
+          command: params.command,
+        },
+      })
+
+      // Mark task as in progress
+      await TaskFile.start(taskFile.id, `Running ${params.subagent_type}...`)
+
       ctx.metadata({
         title: params.description,
         metadata: {
           sessionId: session.id,
+          taskId: taskFile.id,
         },
       })
 
@@ -114,11 +131,18 @@ export const TaskTool = Tool.define("task", async (ctx) => {
             title: part.state.status === "completed" ? part.state.title : undefined,
           },
         }
+
+        // Update task file with tool progress
+        await TaskFile.update(taskFile.id, (task) => {
+          task.toolSummary = Object.values(parts).sort((a, b) => a.id.localeCompare(b.id))
+        })
+
         ctx.metadata({
           title: params.description,
           metadata: {
             summary: Object.values(parts).sort((a, b) => a.id.localeCompare(b.id)),
             sessionId: session.id,
+            taskId: taskFile.id,
           },
         })
       })
@@ -130,27 +154,38 @@ export const TaskTool = Tool.define("task", async (ctx) => {
 
       function cancel() {
         SessionPrompt.cancel(session.id)
+        // Mark task as cancelled when aborted
+        TaskFile.cancel(taskFile.id)
       }
       ctx.abort.addEventListener("abort", cancel)
       using _ = defer(() => ctx.abort.removeEventListener("abort", cancel))
       const promptParts = await SessionPrompt.resolvePromptParts(params.prompt)
 
-      const result = await SessionPrompt.prompt({
-        messageID,
-        sessionID: session.id,
-        model: {
-          modelID: model.modelID,
-          providerID: model.providerID,
-        },
-        agent: agent.name,
-        tools: {
-          todowrite: false,
-          todoread: false,
-          task: false,
-          ...Object.fromEntries((config.experimental?.primary_tools ?? []).map((t) => [t, false])),
-        },
-        parts: promptParts,
-      })
+      let result
+      try {
+        result = await SessionPrompt.prompt({
+          messageID,
+          sessionID: session.id,
+          model: {
+            modelID: model.modelID,
+            providerID: model.providerID,
+          },
+          agent: agent.name,
+          tools: {
+            todowrite: false,
+            todoread: false,
+            task: false,
+            ...Object.fromEntries((config.experimental?.primary_tools ?? []).map((t) => [t, false])),
+          },
+          parts: promptParts,
+        })
+      } catch (error) {
+        // Mark task as failed on error
+        const errorMsg = error instanceof Error ? error.message : String(error)
+        await TaskFile.fail(taskFile.id, errorMsg)
+        throw error
+      }
+
       unsub()
       const messages = await Session.messages({ sessionID: session.id })
       const summary = messages
@@ -166,13 +201,20 @@ export const TaskTool = Tool.define("task", async (ctx) => {
         }))
       const text = result.parts.findLast((x) => x.type === "text")?.text ?? ""
 
-      const output = text + "\n\n" + ["<task_metadata>", `session_id: ${session.id}`, "</task_metadata>"].join("\n")
+      // Mark task as completed and store output
+      await TaskFile.complete(taskFile.id, text, summary)
+
+      const output =
+        text +
+        "\n\n" +
+        ["<task_metadata>", `session_id: ${session.id}`, `task_id: ${taskFile.id}`, "</task_metadata>"].join("\n")
 
       return {
         title: params.description,
         metadata: {
           summary,
           sessionId: session.id,
+          taskId: taskFile.id,
         },
         output,
       }
