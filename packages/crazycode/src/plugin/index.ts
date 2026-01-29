@@ -12,7 +12,7 @@ import { CodexAuthPlugin } from "./codex"
 export namespace Plugin {
   const log = Log.create({ service: "plugin" })
 
-  const BUILTIN = ["crazycode-copilot-auth@0.0.11", "crazycode-anthropic-auth@0.0.8"]
+  const BUILTIN: string[] = []
 
   // Built-in plugins that are directly imported (not installed from npm)
   const INTERNAL_PLUGINS: PluginInstance[] = [CodexAuthPlugin]

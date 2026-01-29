@@ -14,6 +14,9 @@ import type ParcelWatcher from "@parcel/watcher"
 import { $ } from "bun"
 import { Flag } from "@/flag/flag"
 import { readdir } from "fs/promises"
+import { createRequire } from "module"
+
+const _require = createRequire(import.meta.url)
 
 const SUBSCRIBE_TIMEOUT_MS = 10_000
 
@@ -33,7 +36,7 @@ export namespace FileWatcher {
   }
 
   const watcher = lazy(() => {
-    const binding = require(
+    const binding = _require(
       `@parcel/watcher-${process.platform}-${process.arch}${process.platform === "linux" ? `-${CRAZYCODE_LIBC || "glibc"}` : ""}`,
     )
     return createWrapper(binding) as typeof import("@parcel/watcher")

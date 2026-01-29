@@ -205,7 +205,12 @@ export namespace MCP {
   // Helper function to fetch prompts for a specific client
   async function fetchPromptsForClient(clientName: string, client: Client) {
     const prompts = await client.listPrompts().catch((e) => {
-      log.error("failed to get prompts", { clientName, error: e.message })
+      const isMethodNotFound = e?.code === -32601 || e?.message?.includes("Method not found")
+      if (isMethodNotFound) {
+        log.debug("server does not support prompts", { clientName })
+      } else {
+        log.error("failed to get prompts", { clientName, error: e.message })
+      }
       return undefined
     })
 
@@ -227,7 +232,12 @@ export namespace MCP {
 
   async function fetchResourcesForClient(clientName: string, client: Client) {
     const resources = await client.listResources().catch((e) => {
-      log.error("failed to get prompts", { clientName, error: e.message })
+      const isMethodNotFound = e?.code === -32601 || e?.message?.includes("Method not found")
+      if (isMethodNotFound) {
+        log.debug("server does not support resources", { clientName })
+      } else {
+        log.error("failed to get resources", { clientName, error: e.message })
+      }
       return undefined
     })
 
