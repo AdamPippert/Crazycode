@@ -128,11 +128,13 @@ async function showRemovalSummary(targets: RemovalTargets, method: Installation.
 
   if (method !== "curl" && method !== "unknown") {
     const cmds: Record<string, string> = {
-      npm: "npm uninstall -g crazycode-ai",
-      pnpm: "pnpm uninstall -g crazycode-ai",
-      bun: "bun remove -g crazycode-ai",
-      yarn: "yarn global remove crazycode-ai",
-      brew: "brew uninstall crazycode",
+      npm: "npm uninstall -g opencode-ai",
+      pnpm: "pnpm uninstall -g opencode-ai",
+      bun: "bun remove -g opencode-ai",
+      yarn: "yarn global remove opencode-ai",
+      brew: "brew uninstall opencode",
+      choco: "choco uninstall opencode",
+      scoop: "scoop uninstall opencode",
     }
     prompts.log.info(`  ✓ Package: ${cmds[method] || method}`)
   }
@@ -177,21 +179,32 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
 
   if (method !== "curl" && method !== "unknown") {
     const cmds: Record<string, string[]> = {
-      npm: ["npm", "uninstall", "-g", "crazycode-ai"],
-      pnpm: ["pnpm", "uninstall", "-g", "crazycode-ai"],
-      bun: ["bun", "remove", "-g", "crazycode-ai"],
-      yarn: ["yarn", "global", "remove", "crazycode-ai"],
-      brew: ["brew", "uninstall", "crazycode"],
+      npm: ["npm", "uninstall", "-g", "opencode-ai"],
+      pnpm: ["pnpm", "uninstall", "-g", "opencode-ai"],
+      bun: ["bun", "remove", "-g", "opencode-ai"],
+      yarn: ["yarn", "global", "remove", "opencode-ai"],
+      brew: ["brew", "uninstall", "opencode"],
+      choco: ["choco", "uninstall", "opencode"],
+      scoop: ["scoop", "uninstall", "opencode"],
     }
 
     const cmd = cmds[method]
     if (cmd) {
       spinner.start(`Running ${cmd.join(" ")}...`)
-      const result = await $`${cmd}`.quiet().nothrow()
+      const result =
+        method === "choco"
+          ? await $`echo Y | choco uninstall opencode -y -r`.quiet().nothrow()
+          : await $`${cmd}`.quiet().nothrow()
       if (result.exitCode !== 0) {
-        spinner.stop(`Package manager uninstall failed`, 1)
-        prompts.log.warn(`You may need to run manually: ${cmd.join(" ")}`)
-        errors.push(`Package manager: exit code ${result.exitCode}`)
+        spinner.stop(`Package manager uninstall failed: exit code ${result.exitCode}`, 1)
+        if (
+          method === "choco" &&
+          result.stdout.toString("utf8").includes("not running from an elevated command shell")
+        ) {
+          prompts.log.warn(`You may need to run '${cmd.join(" ")}' from an elevated command shell`)
+        } else {
+          prompts.log.warn(`You may need to run manually: ${cmd.join(" ")}`)
+        }
       } else {
         spinner.stop("Package removed")
       }

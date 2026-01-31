@@ -9,6 +9,10 @@
     "crazycode#test": {
       "dependsOn": ["^build"],
       "outputs": []
+    },
+    "@opencode-ai/app#test": {
+      "dependsOn": ["^build"],
+      "outputs": []
     }
   }
 }

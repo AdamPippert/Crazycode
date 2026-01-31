@@ -31,7 +31,35 @@ export default defineConfig({
     configSchema(),
     solidJs(),
     starlight({
-      title: "CrazyCode",
+      title: "OpenCode",
+      favicon: "/favicon-v3.svg",
+      head: [
+        {
+          tag: "link",
+          attrs: {
+            rel: "icon",
+            href: "/favicon-v3.ico",
+            sizes: "32x32",
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "icon",
+            type: "image/png",
+            href: "/favicon-96x96-v3.png",
+            sizes: "96x96",
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "apple-touch-icon",
+            href: "/apple-touch-icon-v3.png",
+            sizes: "180x180",
+          },
+        },
+      ],
       lastUpdated: true,
       expressiveCode: { themes: ["github-light", "github-dark"] },
       social: [
@@ -60,7 +88,7 @@ export default defineConfig({
         "1-0",
         {
           label: "Usage",
-          items: ["tui", "cli", "ide", "zen", "share", "github", "gitlab"],
+          items: ["tui", "cli", "web", "ide", "zen", "share", "github", "gitlab"],
         },
 
         {

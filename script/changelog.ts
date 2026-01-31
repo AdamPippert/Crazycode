@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { $ } from "bun"
-import { createCrazycode } from "@crazycode-ai/sdk"
+import { createOpencode } from "@opencode-ai/sdk/v2"
 import { parseArgs } from "util"
 
 export const team = [
@@ -14,16 +14,33 @@ export const team = [
   "fwang",
   "adamdotdevin",
   "iamdavidhill",
-  "crazycode-agent[bot]",
+  "opencode-agent[bot]",
+  "R44VC0RP",
 ]
 
-export async function getLatestRelease() {
-  return fetch("https://api.github.com/repos/AdamPippert/Crazycode/releases/latest")
-    .then((res) => {
-      if (!res.ok) throw new Error(res.statusText)
-      return res.json()
-    })
-    .then((data: any) => data.tag_name.replace(/^v/, ""))
+type Release = {
+  tag_name: string
+  draft: boolean
+  prerelease: boolean
+}
+
+export async function getLatestRelease(skip?: string) {
+  const data = await fetch("https://api.github.com/repos/anomalyco/opencode/releases?per_page=100").then((res) => {
+    if (!res.ok) throw new Error(res.statusText)
+    return res.json()
+  })
+
+  const releases = data as Release[]
+  const target = skip?.replace(/^v/, "")
+
+  for (const release of releases) {
+    if (release.draft) continue
+    const tag = release.tag_name.replace(/^v/, "")
+    if (target && tag === target) continue
+    return tag
+  }
+
+  throw new Error("No releases found")
 }
 
 type Commit = {
@@ -137,12 +154,12 @@ async function summarizeCommit(
   message: string,
 ): Promise<string> {
   console.log("summarizing commit:", message)
-  const session = await crazycode.client.session.create()
-  const result = await crazycode.client.session
-    .prompt({
-      path: { id: session.data!.id },
-      body: {
-        model: { providerID: "crazycode", modelID: "claude-sonnet-4-5" },
+  const session = await opencode.client.session.create()
+  const result = await opencode.client.session
+    .prompt(
+      {
+        sessionID: session.data!.id,
+        model: { providerID: "opencode", modelID: "claude-sonnet-4-5" },
         tools: {
           "*": false,
         },
@@ -155,8 +172,10 @@ Commit: ${message}`,
           },
         ],
       },
-      signal: AbortSignal.timeout(120_000),
-    })
+      {
+        signal: AbortSignal.timeout(120_000),
+      },
+    )
     .then((x) => x.data?.parts?.find((y) => y.type === "text")?.text ?? message)
   return result.trim()
 }
@@ -198,8 +217,8 @@ export async function getContributors(from: string, to: string) {
   const fromRef = from.startsWith("v") ? from : `v${from}`
   const toRef = to === "HEAD" ? to : to.startsWith("v") ? to : `v${to}`
   const compare =
-    await $`gh api "/repos/AdamPippert/Crazycode/compare/${fromRef}...${toRef}" --jq '.commits[] | {login: .author.login, message: .commit.message}'`.text()
-  const contributors = new Map<string, string[]>()
+    await $`gh api "/repos/anomalyco/opencode/compare/${fromRef}...${toRef}" --jq '.commits[] | {login: .author.login, message: .commit.message}'`.text()
+  const contributors = new Map<string, Set<string>>()
 
   for (const line of compare.split("\n").filter(Boolean)) {
     const { login, message } = JSON.parse(line) as { login: string | null; message: string }
@@ -207,8 +226,8 @@ export async function getContributors(from: string, to: string) {
     if (title.match(/^(ignore:|test:|chore:|ci:|release:)/i)) continue
 
     if (login && !team.includes(login)) {
-      if (!contributors.has(login)) contributors.set(login, [])
-      contributors.get(login)?.push(title)
+      if (!contributors.has(login)) contributors.set(login, new Set())
+      contributors.get(login)!.add(title)
     }
   }
 
@@ -224,7 +243,7 @@ export async function buildNotes(from: string, to: string) {
 
   console.log("generating changelog since " + from)
 
-  const crazycode = await createCrazycode({ port: 5044 })
+  const opencode = await createOpencode({ port: 0 })
   const notes: string[] = []
 
   try {
@@ -244,8 +263,9 @@ export async function buildNotes(from: string, to: string) {
       throw error
     }
   } finally {
-    crazycode.server.close()
+    await opencode.server.close()
   }
+  console.log("changelog generation complete")
 
   const contributors = await getContributors(from, to)
 

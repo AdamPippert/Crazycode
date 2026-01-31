@@ -19,8 +19,8 @@ There are two ways to load plugins.
 
 Place JavaScript or TypeScript files in the plugin directory.
 
-- `.crazycode/plugin/` - Project-level plugins
-- `~/.config/crazycode/plugin/` - Global plugins
+- `.opencode/plugins/` - Project-level plugins
+- `~/.config/opencode/plugins/` - Global plugins
 
 Files in these directories are automatically loaded at startup.
 
@@ -55,10 +55,10 @@ Browse available plugins in the [ecosystem](/docs/ecosystem#plugins).
 
 Plugins are loaded from all sources and all hooks run in sequence. The load order is:
 
-1. Global config (`~/.config/crazycode/crazycode.json`)
-2. Project config (`crazycode.json`)
-3. Global plugin directory (`~/.config/crazycode/plugin/`)
-4. Project plugin directory (`.crazycode/plugin/`)
+1. Global config (`~/.config/opencode/opencode.json`)
+2. Project config (`opencode.json`)
+3. Global plugin directory (`~/.config/opencode/plugins/`)
+4. Project plugin directory (`.opencode/plugins/`)
 
 Duplicate npm packages with the same name and version are loaded once. However, a local plugin and an npm plugin with similar names are both loaded separately.
 
@@ -85,7 +85,7 @@ Local plugins and custom tools can use external npm packages. Add a `package.jso
 
 CrazyCode runs `bun install` at startup to install these. Your plugins and tools can then import them.
 
-```ts title=".crazycode/plugin/my-plugin.ts"
+```ts title=".opencode/plugins/my-plugin.ts"
 import { escape } from "shescape"
 
 export const MyPlugin = async (ctx) => {
@@ -103,7 +103,7 @@ export const MyPlugin = async (ctx) => {
 
 ### Basic structure
 
-```js title=".crazycode/plugin/example.js"
+```js title=".opencode/plugins/example.js"
 export const MyPlugin = async ({ project, client, $, directory, worktree }) => {
   console.log("Plugin initialized!")
 
@@ -170,8 +170,8 @@ Plugins can subscribe to events as seen below in the Examples section. Here is a
 
 #### Permission Events
 
+- `permission.asked`
 - `permission.replied`
-- `permission.updated`
 
 #### Server Events
 
@@ -215,7 +215,7 @@ Here are some examples of plugins you can use to extend crazycode.
 
 Send notifications when certain events occur:
 
-```js title=".crazycode/plugin/notification.js"
+```js title=".opencode/plugins/notification.js"
 export const NotificationPlugin = async ({ project, client, $, directory, worktree }) => {
   return {
     event: async ({ event }) => {
@@ -240,7 +240,7 @@ If you’re using the CrazyCode desktop app, it can send system notifications au
 
 Prevent crazycode from reading `.env` files:
 
-```javascript title=".crazycode/plugin/env-protection.js"
+```javascript title=".opencode/plugins/env-protection.js"
 export const EnvProtection = async ({ project, client, $, directory, worktree }) => {
   return {
     "tool.execute.before": async (input, output) => {
@@ -258,8 +258,8 @@ export const EnvProtection = async ({ project, client, $, directory, worktree })
 
 Plugins can also add custom tools to crazycode:
 
-```ts title=".crazycode/plugin/custom-tools.ts"
-import { type Plugin, tool } from "@crazycode-ai/plugin"
+```ts title=".opencode/plugins/custom-tools.ts"
+import { type Plugin, tool } from "@opencode-ai/plugin"
 
 export const CustomToolsPlugin: Plugin = async (ctx) => {
   return {
@@ -269,8 +269,9 @@ export const CustomToolsPlugin: Plugin = async (ctx) => {
         args: {
           foo: tool.schema.string(),
         },
-        async execute(args, ctx) {
-          return `Hello ${args.foo}!`
+        async execute(args, context) {
+          const { directory, worktree } = context
+          return `Hello ${args.foo} from ${directory} (worktree: ${worktree})`
         },
       }),
     },
@@ -292,7 +293,7 @@ Your custom tools will be available to crazycode alongside built-in tools.
 
 Use `client.app.log()` instead of `console.log` for structured logging:
 
-```ts title=".crazycode/plugin/my-plugin.ts"
+```ts title=".opencode/plugins/my-plugin.ts"
 export const MyPlugin = async ({ client }) => {
   await client.app.log({
     service: "my-plugin",
@@ -311,8 +312,8 @@ Levels: `debug`, `info`, `warn`, `error`. See [SDK documentation](https://crazyc
 
 Customize the context included when a session is compacted:
 
-```ts title=".crazycode/plugin/compaction.ts"
-import type { Plugin } from "@crazycode-ai/plugin"
+```ts title=".opencode/plugins/compaction.ts"
+import type { Plugin } from "@opencode-ai/plugin"
 
 export const CompactionPlugin: Plugin = async (ctx) => {
   return {
@@ -335,8 +336,8 @@ The `experimental.session.compacting` hook fires before the LLM generates a cont
 
 You can also replace the compaction prompt entirely by setting `output.prompt`:
 
-```ts title=".crazycode/plugin/custom-compaction.ts"
-import type { Plugin } from "@crazycode-ai/plugin"
+```ts title=".opencode/plugins/custom-compaction.ts"
+import type { Plugin } from "@opencode-ai/plugin"
 
 export const CustomCompactionPlugin: Plugin = async (ctx) => {
   return {

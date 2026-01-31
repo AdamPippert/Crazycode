@@ -11,9 +11,8 @@ import { Instance } from "./instance"
 import { Vcs } from "./vcs"
 import { Log } from "@/util/log"
 import { ShareNext } from "@/share/share-next"
-import { BrowserBridge } from "../browser"
-import { Flag } from "@/flag/flag"
-import { Config } from "../config/config"
+import { Snapshot } from "../snapshot"
+import { Truncate } from "../tool/truncation"
 
 export async function InstanceBootstrap() {
   Log.Default.info("bootstrapping", { directory: Instance.directory })
@@ -25,6 +24,8 @@ export async function InstanceBootstrap() {
   FileWatcher.init()
   File.init()
   Vcs.init()
+  Snapshot.init()
+  Truncate.init()
 
   // Initialize browser bridge if enabled
   const config = await Config.get()

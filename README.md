@@ -14,6 +14,25 @@
   <a href="https://github.com/AdamPippert/Crazycode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/AdamPippert/Crazycode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
+<p align="center">
+  <a href="README.md">English</a> |
+  <a href="README.zh.md">简体中文</a> |
+  <a href="README.zht.md">繁體中文</a> |
+  <a href="README.ko.md">한국어</a> |
+  <a href="README.de.md">Deutsch</a> |
+  <a href="README.es.md">Español</a> |
+  <a href="README.fr.md">Français</a> |
+  <a href="README.it.md">Italiano</a> |
+  <a href="README.da.md">Dansk</a> |
+  <a href="README.ja.md">日本語</a> |
+  <a href="README.pl.md">Polski</a> |
+  <a href="README.ru.md">Русский</a> |
+  <a href="README.ar.md">العربية</a> |
+  <a href="README.no.md">Norsk</a> |
+  <a href="README.br.md">Português (Brasil)</a> |
+  <a href="README.th.md">ไทย</a>
+</p>
+
 [![CrazyCode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://crazycode.ai)
 
 ---
@@ -26,7 +45,7 @@ curl -fsSL https://crazycode.ai/install | bash
 
 # Package managers
 npm i -g crazycode-ai@latest        # or bun/pnpm/yarn
-scoop bucket add extras; scoop install extras/crazycode  # Windows
+scoop install crazycode             # Windows
 choco install crazycode             # Windows
 brew install AdamPippert/tap/crazycode # macOS and Linux (recommended, always up to date)
 brew install crazycode              # macOS and Linux (official brew formula, updated less)
@@ -52,6 +71,8 @@ CrazyCode is also available as a desktop application. Download directly from the
 ```bash
 # macOS (Homebrew)
 brew install --cask crazycode-desktop
+# Windows (Scoop)
+scoop install crazycode-desktop
 ```
 
 #### Installation Directory
