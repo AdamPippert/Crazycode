@@ -431,9 +431,9 @@ fi
 
 echo -e ""
 echo -e "${MUTED}                         ${NC}             ▄     "
-echo -e "${MUTED}█▀▀▀ █▀▀█ ▄▀▀▄ ▀▀▀█ █  █ ${NC}█▀▀▀ █▀▀█ █▀▀█ █▀▀█"
-echo -e "${MUTED}█░░░ █▀▀▄ █▀▀█ ░░█░ ▀██▀ ${NC}█░░░ █░░█ █░░█ █▀▀▀"
-echo -e "${MUTED}▀▀▀▀ ▀  ▀ ▀  ▀ █▀▀▀ ░▀▀░ ${NC}▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀"
+echo -e "${MUTED}█▀▀▀ █▀▀█ ▄▀▀▄ █▀▀█ █  █ ${NC}█▀▀▀ █▀▀█ █▀▀█ █▀▀█"
+echo -e "${MUTED}█░░░ █▀▀▄ █▀▀█ ░▄▀░ ▀██▀ ${NC}█░░░ █░░█ █░░█ █▀▀▀"
+echo -e "${MUTED}▀▀▀▀ ▀  ▀ ▀  ▀ ▀▀▀▀  ▀▀  ${NC}▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀"
 echo -e ""
 echo -e ""
 echo -e "${MUTED}CrazyCode includes free models, to start:${NC}"
