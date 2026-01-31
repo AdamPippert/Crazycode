@@ -28,7 +28,7 @@ curl -fsSL https://crazycode.ai/install | bash
 npm i -g crazycode-ai@latest        # 也可使用 bun/pnpm/yarn
 scoop bucket add extras; scoop install extras/crazycode  # Windows
 choco install crazycode             # Windows
-brew install anomalyco/tap/crazycode # macOS 和 Linux（推荐，始终保持最新）
+brew install AdamPippert/tap/crazycode # macOS 和 Linux（推荐，始终保持最新）
 brew install crazycode              # macOS 和 Linux（官方 brew formula，更新频率较低）
 paru -S crazycode-bin               # Arch Linux
 mise use -g crazycode               # 任意系统

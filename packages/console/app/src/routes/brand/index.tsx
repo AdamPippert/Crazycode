@@ -53,16 +53,16 @@ export default function Brand() {
 
   return (
     <main data-page="enterprise">
-      <Title>OpenCode | Brand</Title>
+      <Title>CrazyCode | Brand</Title>
       <Link rel="canonical" href={`${config.baseUrl}/brand`} />
-      <Meta name="description" content="OpenCode brand guidelines" />
+      <Meta name="description" content="CrazyCode brand guidelines" />
       <div data-component="container">
         <Header />
 
         <div data-component="content">
           <section data-component="brand-content">
             <h1>Brand guidelines</h1>
-            <p>Resources and assets to help you work with the OpenCode brand.</p>
+            <p>Resources and assets to help you work with the CrazyCode brand.</p>
             <button
               data-component="download-button"
               onClick={() => downloadFile(brandAssets, "crazycode-brand-assets.zip")}
@@ -80,7 +80,7 @@ export default function Brand() {
 
             <div data-component="brand-grid">
               <div>
-                <img src={previewLogoLight} alt="OpenCode brand guidelines" />
+                <img src={previewLogoLight} alt="CrazyCode brand guidelines" />
                 <div data-component="actions">
                   <button onClick={() => downloadFile(logoLightPng, "crazycode-logo-light.png")}>
                     PNG
@@ -107,7 +107,7 @@ export default function Brand() {
                 </div>
               </div>
               <div>
-                <img src={previewLogoDark} alt="OpenCode brand guidelines" />
+                <img src={previewLogoDark} alt="CrazyCode brand guidelines" />
                 <div data-component="actions">
                   <button onClick={() => downloadFile(logoDarkPng, "crazycode-logo-dark.png")}>
                     PNG
@@ -134,7 +134,7 @@ export default function Brand() {
                 </div>
               </div>
               <div>
-                <img src={previewWordmarkLight} alt="OpenCode brand guidelines" />
+                <img src={previewWordmarkLight} alt="CrazyCode brand guidelines" />
                 <div data-component="actions">
                   <button onClick={() => downloadFile(wordmarkLightPng, "crazycode-wordmark-light.png")}>
                     PNG
@@ -161,7 +161,7 @@ export default function Brand() {
                 </div>
               </div>
               <div>
-                <img src={previewWordmarkDark} alt="OpenCode brand guidelines" />
+                <img src={previewWordmarkDark} alt="CrazyCode brand guidelines" />
                 <div data-component="actions">
                   <button onClick={() => downloadFile(wordmarkDarkPng, "crazycode-wordmark-dark.png")}>
                     PNG
@@ -188,7 +188,7 @@ export default function Brand() {
                 </div>
               </div>
               <div>
-                <img src={previewWordmarkSimpleLight} alt="OpenCode brand guidelines" />
+                <img src={previewWordmarkSimpleLight} alt="CrazyCode brand guidelines" />
                 <div data-component="actions">
                   <button onClick={() => downloadFile(wordmarkSimpleLightPng, "crazycode-wordmark-simple-light.png")}>
                     PNG
@@ -215,7 +215,7 @@ export default function Brand() {
                 </div>
               </div>
               <div>
-                <img src={previewWordmarkSimpleDark} alt="OpenCode brand guidelines" />
+                <img src={previewWordmarkSimpleDark} alt="CrazyCode brand guidelines" />
                 <div data-component="actions">
                   <button onClick={() => downloadFile(wordmarkSimpleDarkPng, "crazycode-wordmark-simple-dark.png")}>
                     PNG

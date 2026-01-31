@@ -84,6 +84,10 @@ export namespace Provider {
       }
     },
     async crazycode(input) {
+      // Guard against undefined input (can happen if models.dev API doesn't have this provider)
+      if (!input) {
+        return { autoload: false, options: {} }
+      }
       const hasKey = await (async () => {
         const env = Env.all()
         if (input.env.some((item) => env[item])) return true
@@ -602,11 +606,24 @@ export namespace Provider {
     }
   }
 
+  // Map external provider IDs to internal names
+  const PROVIDER_ID_ALIASES: Record<string, string> = {
+    opencode: "crazycode",
+  }
+
   const state = Instance.state(async () => {
     using _ = log.time("state")
     const config = await Config.get()
     const modelsDev = await ModelsDev.get()
-    const database = mapValues(modelsDev, fromModelsDevProvider)
+
+    // Rename provider IDs using aliases (e.g., "opencode" → "crazycode")
+    const renamedModelsDev: typeof modelsDev = {}
+    for (const [id, provider] of Object.entries(modelsDev)) {
+      const newId = PROVIDER_ID_ALIASES[id] ?? id
+      renamedModelsDev[newId] = { ...provider, id: newId }
+    }
+
+    const database = mapValues(renamedModelsDev, fromModelsDevProvider)
 
     const disabled = new Set(config.disabled_providers ?? [])
     const enabled = config.enabled_providers ? new Set(config.enabled_providers) : null

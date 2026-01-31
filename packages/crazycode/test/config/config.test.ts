@@ -305,9 +305,9 @@ test("migrates mode field to agent field", async () => {
 test("loads config from .crazycode directory", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".crazycode")
-      await fs.mkdir(opencodeDir, { recursive: true })
-      const agentDir = path.join(opencodeDir, "agent")
+      const crazycodeDir = path.join(dir, ".crazycode")
+      await fs.mkdir(crazycodeDir, { recursive: true })
+      const agentDir = path.join(crazycodeDir, "agent")
       await fs.mkdir(agentDir, { recursive: true })
 
       await Bun.write(
@@ -416,8 +416,8 @@ test("merges plugin arrays from global and local configs", async () => {
     init: async (dir) => {
       // Create a nested project structure with local .crazycode config
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".crazycode")
-      await fs.mkdir(opencodeDir, { recursive: true })
+      const crazycodeDir = path.join(projectDir, ".crazycode")
+      await fs.mkdir(crazycodeDir, { recursive: true })
 
       // Global config with plugins
       await Bun.write(
@@ -430,7 +430,7 @@ test("merges plugin arrays from global and local configs", async () => {
 
       // Local .crazycode config with different plugins
       await Bun.write(
-        path.join(opencodeDir, "crazycode.json"),
+        path.join(crazycodeDir, "crazycode.json"),
         JSON.stringify({
           $schema: "https://crazycode.ai/config.json",
           plugin: ["local-plugin-1"],
@@ -460,9 +460,9 @@ test("merges plugin arrays from global and local configs", async () => {
 test("does not error when only custom agent is a subagent", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".crazycode")
-      await fs.mkdir(opencodeDir, { recursive: true })
-      const agentDir = path.join(opencodeDir, "agent")
+      const crazycodeDir = path.join(dir, ".crazycode")
+      await fs.mkdir(crazycodeDir, { recursive: true })
+      const agentDir = path.join(crazycodeDir, "agent")
       await fs.mkdir(agentDir, { recursive: true })
 
       await Bun.write(
@@ -493,8 +493,8 @@ test("merges instructions arrays from global and local configs", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".crazycode")
-      await fs.mkdir(opencodeDir, { recursive: true })
+      const crazycodeDir = path.join(projectDir, ".crazycode")
+      await fs.mkdir(crazycodeDir, { recursive: true })
 
       await Bun.write(
         path.join(dir, "crazycode.json"),
@@ -505,7 +505,7 @@ test("merges instructions arrays from global and local configs", async () => {
       )
 
       await Bun.write(
-        path.join(opencodeDir, "crazycode.json"),
+        path.join(crazycodeDir, "crazycode.json"),
         JSON.stringify({
           $schema: "https://crazycode.ai/config.json",
           instructions: ["local-instructions.md"],
@@ -532,8 +532,8 @@ test("deduplicates duplicate instructions from global and local configs", async 
   await using tmp = await tmpdir({
     init: async (dir) => {
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".crazycode")
-      await fs.mkdir(opencodeDir, { recursive: true })
+      const crazycodeDir = path.join(projectDir, ".crazycode")
+      await fs.mkdir(crazycodeDir, { recursive: true })
 
       await Bun.write(
         path.join(dir, "crazycode.json"),
@@ -544,7 +544,7 @@ test("deduplicates duplicate instructions from global and local configs", async 
       )
 
       await Bun.write(
-        path.join(opencodeDir, "crazycode.json"),
+        path.join(crazycodeDir, "crazycode.json"),
         JSON.stringify({
           $schema: "https://crazycode.ai/config.json",
           instructions: ["duplicate.md", "local-only.md"],
@@ -575,8 +575,8 @@ test("deduplicates duplicate plugins from global and local configs", async () =>
     init: async (dir) => {
       // Create a nested project structure with local .crazycode config
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".crazycode")
-      await fs.mkdir(opencodeDir, { recursive: true })
+      const crazycodeDir = path.join(projectDir, ".crazycode")
+      await fs.mkdir(crazycodeDir, { recursive: true })
 
       // Global config with plugins
       await Bun.write(
@@ -589,7 +589,7 @@ test("deduplicates duplicate plugins from global and local configs", async () =>
 
       // Local .crazycode config with some overlapping plugins
       await Bun.write(
-        path.join(opencodeDir, "crazycode.json"),
+        path.join(crazycodeDir, "crazycode.json"),
         JSON.stringify({
           $schema: "https://crazycode.ai/config.json",
           plugin: ["duplicate-plugin", "local-plugin-1"],
@@ -1045,10 +1045,10 @@ test("local .crazycode config can override MCP from project config", async () =>
         }),
       )
       // Local .crazycode directory config enables it
-      const opencodeDir = path.join(dir, ".crazycode")
-      await fs.mkdir(opencodeDir, { recursive: true })
+      const crazycodeDir = path.join(dir, ".crazycode")
+      await fs.mkdir(crazycodeDir, { recursive: true })
       await Bun.write(
-        path.join(opencodeDir, "crazycode.json"),
+        path.join(crazycodeDir, "crazycode.json"),
         JSON.stringify({
           $schema: "https://crazycode.ai/config.json",
           mcp: {
@@ -1076,7 +1076,7 @@ test("project config overrides remote well-known config", async () => {
   let fetchedUrl: string | undefined
   const mockFetch = mock((url: string | URL | Request) => {
     const urlStr = url.toString()
-    if (urlStr.includes(".well-known/opencode")) {
+    if (urlStr.includes(".well-known/crazycode")) {
       fetchedUrl = urlStr
       return Promise.resolve(
         new Response(
@@ -1135,7 +1135,7 @@ test("project config overrides remote well-known config", async () => {
       fn: async () => {
         const config = await Config.get()
         // Verify fetch was called for wellknown config
-        expect(fetchedUrl).toBe("https://example.com/.well-known/opencode")
+        expect(fetchedUrl).toBe("https://example.com/.well-known/crazycode")
         // Project config (enabled: true) should override remote (enabled: false)
         expect(config.mcp?.jira?.enabled).toBe(true)
       },
@@ -1204,8 +1204,8 @@ describe("deduplicatePlugins", () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
         const projectDir = path.join(dir, "project")
-        const opencodeDir = path.join(projectDir, ".crazycode")
-        const pluginDir = path.join(opencodeDir, "plugin")
+        const crazycodeDir = path.join(projectDir, ".crazycode")
+        const pluginDir = path.join(crazycodeDir, "plugin")
         await fs.mkdir(pluginDir, { recursive: true })
 
         await Bun.write(

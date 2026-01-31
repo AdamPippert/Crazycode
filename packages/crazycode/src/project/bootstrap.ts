@@ -11,6 +11,9 @@ import { Instance } from "./instance"
 import { Vcs } from "./vcs"
 import { Log } from "@/util/log"
 import { ShareNext } from "@/share/share-next"
+import { BrowserBridge } from "../browser"
+import { Flag } from "@/flag/flag"
+import { Config } from "../config/config"
 
 export async function InstanceBootstrap() {
   Log.Default.info("bootstrapping", { directory: Instance.directory })
@@ -22,6 +25,13 @@ export async function InstanceBootstrap() {
   FileWatcher.init()
   File.init()
   Vcs.init()
+
+  // Initialize browser bridge if enabled
+  const config = await Config.get()
+  if (Flag.CRAZYCODE_BROWSER || config.experimental?.browser === true) {
+    const port = Flag.CRAZYCODE_BROWSER_PORT || config.experimental?.browserPort || 9333
+    await BrowserBridge.start({ port, enabled: true })
+  }
 
   Bus.subscribe(Command.Event.Executed, async (payload) => {
     if (payload.properties.name === Command.Default.INIT) {

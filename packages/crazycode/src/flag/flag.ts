@@ -37,6 +37,10 @@ export namespace Flag {
   export const CRAZYCODE_EXPERIMENTAL_LSP_TY = truthy("CRAZYCODE_EXPERIMENTAL_LSP_TY")
   export const CRAZYCODE_EXPERIMENTAL_LSP_TOOL = CRAZYCODE_EXPERIMENTAL || truthy("CRAZYCODE_EXPERIMENTAL_LSP_TOOL")
 
+  // Browser integration
+  export const CRAZYCODE_BROWSER = truthy("CRAZYCODE_BROWSER")
+  export const CRAZYCODE_BROWSER_PORT = number("CRAZYCODE_BROWSER_PORT") || 9333
+
   function truthy(key: string) {
     const value = process.env[key]?.toLowerCase()
     return value === "true" || value === "1"

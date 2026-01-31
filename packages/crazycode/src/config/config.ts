@@ -1046,6 +1046,13 @@ export namespace Config {
             .positive()
             .optional()
             .describe("Timeout in milliseconds for model context protocol (MCP) requests"),
+          browser: z.boolean().optional().describe("Enable browser manipulation tools for Chrome automation"),
+          browserPort: z
+            .number()
+            .int()
+            .positive()
+            .optional()
+            .describe("Port for the browser bridge server (default: 9333)"),
         })
         .optional(),
     })

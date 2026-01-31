@@ -28,7 +28,7 @@ curl -fsSL https://crazycode.ai/install | bash
 npm i -g crazycode-ai@latest        # or bun/pnpm/yarn
 scoop bucket add extras; scoop install extras/crazycode  # Windows
 choco install crazycode             # Windows
-brew install anomalyco/tap/crazycode # macOS and Linux (recommended, always up to date)
+brew install AdamPippert/tap/crazycode # macOS and Linux (recommended, always up to date)
 brew install crazycode              # macOS and Linux (official brew formula, updated less)
 paru -S crazycode-bin               # Arch Linux
 mise use -g crazycode               # Any OS
