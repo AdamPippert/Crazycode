@@ -1,6 +1,6 @@
 import { createStore } from "solid-js/store"
 import { batch, createMemo } from "solid-js"
-import { createSimpleContext } from "@opencode-ai/ui/context"
+import { createSimpleContext } from "@crazycode-ai/ui/context"
 import { useSDK } from "./sdk"
 import { useSync } from "./sync"
 import { base64Encode } from "@crazycode-ai/util/encode"

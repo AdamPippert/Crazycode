@@ -6,13 +6,13 @@ import {
   type PermissionRequest,
   TextPart,
   ToolPart,
-} from "@opencode-ai/sdk/v2/client"
-import { type FileDiff } from "@opencode-ai/sdk/v2"
+} from "@crazycode-ai/sdk/v2/client"
+import { type FileDiff } from "@crazycode-ai/sdk/v2"
 import { useData } from "../context"
 import { useDiffComponent } from "../context/diff"
 import { type UiI18nKey, type UiI18nParams, useI18n } from "../context/i18n"
-import { findLast } from "@opencode-ai/util/array"
-import { getDirectory, getFilename } from "@opencode-ai/util/path"
+import { findLast } from "@crazycode-ai/util/array"
+import { getDirectory, getFilename } from "@crazycode-ai/util/path"
 
 import { Binary } from "@crazycode-ai/util/binary"
 import { createEffect, createMemo, createSignal, For, Match, on, onCleanup, ParentProps, Show, Switch } from "solid-js"

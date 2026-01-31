@@ -14,7 +14,7 @@ import { relaunch } from "@tauri-apps/plugin-process"
 import { AsyncStorage } from "@solid-primitives/storage"
 import { fetch as tauriFetch } from "@tauri-apps/plugin-http"
 import { Store } from "@tauri-apps/plugin-store"
-import { Splash } from "@opencode-ai/ui/logo"
+import { Splash } from "@crazycode-ai/ui/logo"
 import { createSignal, Show, Accessor, JSX, createResource, onMount, onCleanup } from "solid-js"
 
 import { UPDATER_ENABLED } from "./updater"

@@ -86,7 +86,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.global.config.get({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.global.config.get({\n  ...\n})"
           }
         ]
       },
@@ -128,7 +128,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.global.config.update({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.global.config.update({\n  ...\n})"
           }
         ]
       }
@@ -207,7 +207,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.auth.set({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.auth.set({\n  ...\n})"
           }
         ]
       },
@@ -250,7 +250,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.auth.remove({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.auth.remove({\n  ...\n})"
           }
         ]
       }
@@ -901,7 +901,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.config.providers({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.config.providers({\n  ...\n})"
           }
         ]
       }
@@ -1144,7 +1144,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.worktree.remove({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.worktree.remove({\n  ...\n})"
           }
         ]
       }
@@ -1197,7 +1197,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.worktree.reset({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.worktree.reset({\n  ...\n})"
           }
         ]
       }
@@ -1237,7 +1237,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.experimental.resource.list({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.experimental.resource.list({\n  ...\n})"
           }
         ]
       }
@@ -5467,7 +5467,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.instance.dispose({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.instance.dispose({\n  ...\n})"
           }
         ]
       }
@@ -5501,7 +5501,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.path.get({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.path.get({\n  ...\n})"
           }
         ]
       }
@@ -5535,7 +5535,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.vcs.get({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.vcs.get({\n  ...\n})"
           }
         ]
       }
@@ -5572,7 +5572,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.command.list({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.command.list({\n  ...\n})"
           }
         ]
       }
@@ -5649,7 +5649,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.app.log({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.app.log({\n  ...\n})"
           }
         ]
       }
@@ -5686,7 +5686,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.app.agents({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.app.agents({\n  ...\n})"
           }
         ]
       }
@@ -5738,7 +5738,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.app.skills({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.app.skills({\n  ...\n})"
           }
         ]
       }
@@ -5775,7 +5775,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.lsp.status({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.lsp.status({\n  ...\n})"
           }
         ]
       }
@@ -5812,7 +5812,7 @@
         "x-codeSamples": [
           {
             "lang": "js",
-            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.formatter.status({\n  ...\n})"
+            "source": "import { createOpencodeClient } from \"@crazycode-ai/sdk\n\nconst client = createOpencodeClient()\nawait client.formatter.status({\n  ...\n})"
           }
         ]
       }

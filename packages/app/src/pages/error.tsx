@@ -5,7 +5,7 @@ import { Component, Show } from "solid-js"
 import { createStore } from "solid-js/store"
 import { usePlatform } from "@/context/platform"
 import { useLanguage } from "@/context/language"
-import { Icon } from "@opencode-ai/ui/icon"
+import { Icon } from "@crazycode-ai/ui/icon"
 
 export type InitError = {
   name: string

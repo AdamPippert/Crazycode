@@ -7,8 +7,8 @@ import { useDialog } from "@crazycode-ai/ui/context/dialog"
 import { Dialog } from "@crazycode-ai/ui/dialog"
 import { List } from "@crazycode-ai/ui/list"
 import { extractPromptFromParts } from "@/utils/prompt"
-import type { TextPart as SDKTextPart } from "@opencode-ai/sdk/v2/client"
-import { base64Encode } from "@opencode-ai/util/encode"
+import type { TextPart as SDKTextPart } from "@crazycode-ai/sdk/v2/client"
+import { base64Encode } from "@crazycode-ai/util/encode"
 import { useLanguage } from "@/context/language"
 
 interface ForkableMessage {

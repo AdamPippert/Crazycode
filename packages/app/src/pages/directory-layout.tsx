@@ -4,11 +4,11 @@ import { SDKProvider, useSDK } from "@/context/sdk"
 import { SyncProvider, useSync } from "@/context/sync"
 import { LocalProvider } from "@/context/local"
 
-import { DataProvider } from "@opencode-ai/ui/context"
-import { iife } from "@opencode-ai/util/iife"
-import type { QuestionAnswer } from "@opencode-ai/sdk/v2"
+import { DataProvider } from "@crazycode-ai/ui/context"
+import { iife } from "@crazycode-ai/util/iife"
+import type { QuestionAnswer } from "@crazycode-ai/sdk/v2"
 import { decode64 } from "@/utils/base64"
-import { showToast } from "@opencode-ai/ui/toast"
+import { showToast } from "@crazycode-ai/ui/toast"
 import { useLanguage } from "@/context/language"
 
 export default function Layout(props: ParentProps) {
