@@ -6,7 +6,10 @@ export const BrowserScreenshotTool = Tool.define("browser_screenshot", {
   description:
     "Capture a screenshot of the current page in Chrome browser. Returns the screenshot as a base64-encoded image. Can capture full page or just the visible viewport.",
   parameters: z.object({
-    fullPage: z.boolean().optional().describe("Capture the full scrollable page (default: false, captures viewport only)"),
+    fullPage: z
+      .boolean()
+      .optional()
+      .describe("Capture the full scrollable page (default: false, captures viewport only)"),
   }),
   async execute(params, ctx) {
     await ctx.ask({

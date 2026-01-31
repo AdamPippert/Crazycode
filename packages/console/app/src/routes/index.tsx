@@ -697,8 +697,8 @@ export default function Home() {
               </li>
               <li>
                 <Faq question="How much does CrazyCode cost?">
-                  CrazyCode is 100% free to use. It also comes with a set of free models. There might be additional costs
-                  if you connect any other provider.
+                  CrazyCode is 100% free to use. It also comes with a set of free models. There might be additional
+                  costs if you connect any other provider.
                 </Faq>
               </li>
               <li>

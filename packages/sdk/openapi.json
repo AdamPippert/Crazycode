@@ -9548,6 +9548,16 @@
                 "type": "integer",
                 "exclusiveMinimum": 0,
                 "maximum": 9007199254740991
+              },
+              "browser": {
+                "description": "Enable browser manipulation tools for Chrome automation",
+                "type": "boolean"
+              },
+              "browserPort": {
+                "description": "Port for the browser bridge server (default: 9333)",
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
               }
             }
           }

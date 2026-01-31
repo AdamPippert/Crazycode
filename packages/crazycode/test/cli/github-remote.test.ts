@@ -18,7 +18,10 @@ test("parses git@ URL without .git suffix", () => {
 })
 
 test("parses ssh:// URL with .git suffix", () => {
-  expect(parseGitHubRemote("ssh://git@github.com/AdamPippert/CrazyCode.git")).toEqual({ owner: "sst", repo: "CrazyCode" })
+  expect(parseGitHubRemote("ssh://git@github.com/AdamPippert/CrazyCode.git")).toEqual({
+    owner: "sst",
+    repo: "CrazyCode",
+  })
 })
 
 test("parses ssh:// URL without .git suffix", () => {

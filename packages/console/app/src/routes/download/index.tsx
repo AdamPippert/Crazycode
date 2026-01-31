@@ -445,8 +445,8 @@ export default function Download() {
             </li>
             <li>
               <Faq question="How much does CrazyCode cost?">
-                CrazyCode is 100% free to use. Any additional costs will come from your subscription to a model provider.
-                While CrazyCode works with any model provider, we recommend using <A href="/zen">Zen</A>.
+                CrazyCode is 100% free to use. Any additional costs will come from your subscription to a model
+                provider. While CrazyCode works with any model provider, we recommend using <A href="/zen">Zen</A>.
               </Faq>
             </li>
             <li>

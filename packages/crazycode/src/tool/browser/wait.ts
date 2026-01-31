@@ -43,9 +43,7 @@ export const BrowserWaitTool = Tool.define("browser_wait", {
       }
     }
 
-    const description = params.selector
-      ? `Element "${params.selector}" found`
-      : `Waited ${params.timeout}ms`
+    const description = params.selector ? `Element "${params.selector}" found` : `Waited ${params.timeout}ms`
 
     return {
       output: description,

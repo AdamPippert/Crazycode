@@ -1754,6 +1754,14 @@ export type Config = {
      * Timeout in milliseconds for model context protocol (MCP) requests
      */
     mcp_timeout?: number
+    /**
+     * Enable browser manipulation tools for Chrome automation
+     */
+    browser?: boolean
+    /**
+     * Port for the browser bridge server (default: 9333)
+     */
+    browserPort?: number
   }
 }
 
