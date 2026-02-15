@@ -7,6 +7,13 @@
     </picture>
   </a>
 </p>
+
+<p>
+THIS PROJECT IS READ ONLY, ARCHIVED FOR INFO ONLY.
+
+I've moved on to other things. Just use OpenCode, it's great.
+
+</p>
 <p align="center">The open source AI coding agent.</p>
 <p align="center">
   <a href="https://crazycode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
